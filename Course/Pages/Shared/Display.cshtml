@@ -1,10 +1,46 @@
 ﻿@page
 @{
+    @using System.Reflection;
+    @using System.Linq;
+
     <html>
     <body>
-        <p>
-            Hello. @ViewBag.SupplyInfo.SupplyId
-        </p>
+        <table>
+            @foreach (var prop in ViewBag.Info.GetType().GetProperties())
+            {
+                string propName = prop.Name;
+                if (propName.Contains("Id"))
+                {
+
+                }
+                else if (propName.Contains("Name"))
+                {
+                    Func<PropertyInfo, bool> func = (prop) => prop.Name.Contains(propName.Replace("Name", "Id"));
+                    var property = (ViewBag.Info.GetType().GetProperties() as PropertyInfo[]).Where(func).FirstOrDefault();
+
+                    <tr>
+                        <td>
+                            @propName
+                        </td>
+                        <td>
+                            <a href="/GetData/@propName.Replace("Name", "")/@property.GetValue(ViewBag.Info, null)">@prop.GetValue(ViewBag.Info, null)</a>
+                        </td>
+                    </tr>
+                    //propName.Replace("Name", "Id");
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            @propName
+                        </td>
+                        <td>
+                            @prop.GetValue(ViewBag.Info, null)
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
     </body>
 </html>
 }

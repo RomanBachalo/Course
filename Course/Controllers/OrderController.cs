@@ -41,6 +41,7 @@ namespace Course.Controllers
         {
             var orderInfo = _orderService.GetOrderInfoById(id);
             ViewBag.Info = orderInfo;
+            ViewBag.Section = PropertyConstants.Order;
 
             return View(StringConstants.DisplayView);
         }

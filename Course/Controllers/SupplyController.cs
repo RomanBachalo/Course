@@ -40,7 +40,8 @@ namespace Course.Controllers
         public IActionResult GetSupplyInfoById([FromRoute] int id)
         {
             var supplyInfo = _supplyService.GetSupplyInfoById(id);
-            ViewBag.SupplyInfo = supplyInfo;
+            ViewBag.Info = supplyInfo;
+            ViewBag.Section = PropertyConstants.Supply;
 
             return View(StringConstants.DisplayView);
         }

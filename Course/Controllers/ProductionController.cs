@@ -40,7 +40,8 @@ namespace Course.Controllers
         public IActionResult GetProductionInfoById([FromRoute] int id)
         {
             var supplyInfo = _productionService.GetProductionInfoById(id);
-            ViewBag.SupplyInfo = supplyInfo;
+            ViewBag.Info = supplyInfo;
+            ViewBag.Section = PropertyConstants.Production;
 
             return View(StringConstants.DisplayView);
         }
