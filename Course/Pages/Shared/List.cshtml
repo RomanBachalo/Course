@@ -1,0 +1,29 @@
+﻿@page
+@{
+    @using System.Reflection
+
+    <html>
+    <body>
+        <table>
+            <tr>
+                @foreach (var column in ViewBag.Columns)
+                {
+                    <th>@column</th>
+                }
+            </tr>
+            @foreach (var info in ViewBag.InfoList)
+            {
+                <tr>
+                    @foreach (var prop in info.GetType().GetProperties())
+                    {
+                        @if (ViewBag.Columns.Contains(prop.Name))
+                        {
+                            <td>@prop.GetValue(info, null)</td>
+                        }
+                    }
+                </tr>
+            }
+        </table>
+    </body>
+</html>
+}

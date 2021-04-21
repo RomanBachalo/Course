@@ -22,6 +22,7 @@ namespace Course.Services
             var materialInfos = from factory in _furnitureCompanyContext.Factories
                                 join city in _furnitureCompanyContext.Cities on factory.CityId equals city.CityId
                                 join region in _furnitureCompanyContext.Regions on city.RegionId equals region.RegionId
+                                orderby factory.FactoryId
                                 select new FactoryInfo
                                 {
                                     FactoryId = factory.FactoryId,
@@ -45,6 +46,7 @@ namespace Course.Services
                                 join materialType in _furnitureCompanyContext.MaterialTypes on material.MaterialTypeId equals materialType.MaterialTypeId
                                 join materialColor in _furnitureCompanyContext.MaterialColors on material.MaterialId equals materialColor.MaterialId
                                 join color in _furnitureCompanyContext.Colors on materialColor.ColorId equals color.ColorId
+                                orderby material.MaterialId
                                 select new MaterialInfo
                                 {
                                     MaterialId = material.MaterialId,
@@ -106,6 +108,7 @@ namespace Course.Services
                                  join parameter_Furniture in _furnitureCompanyContext.FurnitureParameterFurnitures on furniture.FurnitureId equals parameter_Furniture.FurnitureId
                                  join parameterValue in _furnitureCompanyContext.FurnitureParameterValues on parameter_Furniture.FurnitureParameterValueId equals parameterValue.FurnitureParameterValueId
                                  join furnitureParameter in _furnitureCompanyContext.FurnitureParameters on parameterValue.FurnitureParameterId equals furnitureParameter.FurnitureParameterId
+                                 orderby furniture.FurnitureId
                                  select new FurnitureInfo
                                  {
                                      FurnitureId = furniture.FurnitureId,

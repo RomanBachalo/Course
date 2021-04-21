@@ -29,6 +29,7 @@ namespace Course.Services
                               join materialsAtFactory in _furnitureCompanyContext.MaterialsAtFactories on materialsInProduction.MaterialsAtFactoryId equals materialsAtFactory.MaterialsAtFactoryId
                               join materialColor in _furnitureCompanyContext.MaterialColors on materialsAtFactory.MaterialColorId equals materialColor.MaterialColorId
                               join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                              orderby production.ProductionId
                               select new ProductionInfo
                               {
                                   ProductionId = production.ProductionId,

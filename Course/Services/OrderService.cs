@@ -27,6 +27,7 @@ namespace Course.Services
                         join orderedMaterials in _furnitureCompanyContext.OrderedMaterials on orderedFurniture.OrderedFurnitureId equals orderedMaterials.OrderedFurnitureId
                         join materialColor in _furnitureCompanyContext.MaterialColors on orderedMaterials.MaterialColorId equals materialColor.MaterialColorId
                         join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                        orderby order.OrderId
                         select new OrderInfo
                         {
                             OrderId = order.OrderId,

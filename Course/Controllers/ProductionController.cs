@@ -24,8 +24,14 @@ namespace Course.Controllers
         {
             var supplyInfos = _productionService.GetAllProductionsInfos();
             ViewBag.InfoList = supplyInfos;
-            ViewBag.Columns = supplyInfos.GetType().GetProperties().Select(prop => prop.Name).Where(prop => !prop.Contains("Id")).ToList();
-            ViewBag.Columns.Insert(0, "SupplyId");
+            ViewBag.Columns = supplyInfos.FirstOrDefault()
+                .GetType()
+                .GetProperties()
+                .Select(prop => prop.Name)
+                .Where(prop => !prop.Contains("Id"))
+                .ToList();
+
+            ViewBag.Columns.Insert(0, "ProductionId");
 
             return View(StringConstants.ListView);
         }

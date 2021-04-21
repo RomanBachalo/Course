@@ -27,6 +27,7 @@ namespace Course.Services
                              join materialType in _furnitureCompanyContext.MaterialTypes on material.MaterialTypeId equals materialType.MaterialTypeId
                              join employee in _furnitureCompanyContext.Employees on supply.EmployeeId equals employee.EmployeeId
                              join factory in _furnitureCompanyContext.Factories on employee.FactoryId equals factory.FactoryId
+                             orderby supply.SupplyId
                              select new SupplyInfo
                              {
                                  SupplyId = supply.SupplyId,

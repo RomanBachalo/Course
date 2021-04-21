@@ -24,7 +24,13 @@ namespace Course.Controllers
         {
             var orderInfos = _orderService.GetAllOrdersInfo();
             ViewBag.InfoList = orderInfos;
-            ViewBag.Columns = orderInfos.GetType().GetProperties().Select(prop => prop.Name).Where(prop => !prop.Contains("Id")).ToList();
+            ViewBag.Columns = orderInfos.FirstOrDefault()
+                .GetType()
+                .GetProperties()
+                .Select(prop => prop.Name)
+                .Where(prop => !prop.Contains("Id"))
+                .ToList();
+
             ViewBag.Columns.Insert(0, "OrderId");
 
             return View(StringConstants.ListView);
