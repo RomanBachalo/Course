@@ -1,3 +1,5 @@
+using Course.EntityFramework;
+using Course.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -24,6 +26,13 @@ namespace Course
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            
+            services.AddSingleton<FurnitureCompanyContext>();
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<ISupplyService, SupplyService>();
+            services.AddScoped<IProductionService, ProductionService>();
+            services.AddScoped<IGetDataService, GetDataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +58,7 @@ namespace Course
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
                 endpoints.MapRazorPages();
             });
         }

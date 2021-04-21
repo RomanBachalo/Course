@@ -1,4 +1,5 @@
 ﻿using Course.Services;
+using Course.Constants;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Course.Controllers
 {
+    [Route("[controller]")]
     public class SupplyController : Controller
     {
         private readonly ISupplyService _supplyService;
@@ -21,15 +23,20 @@ namespace Course.Controllers
         public IActionResult Index()
         {
             var supplyInfos = _supplyService.GetAllSupplyInfos();
+            ViewBag.InfoList = supplyInfos;
+            ViewBag.Columns = supplyInfos.GetType().GetProperties().Select(prop => prop.Name).Where(prop => !prop.Contains("Id")).ToList();
+            ViewBag.Columns.Insert(0, "SupplyId");
 
-            return View(supplyInfos);
+            return View(StringConstants.ListView);
         }
 
+        [HttpGet, Route("{id}")]
         public IActionResult GetSupplyInfoById([FromRoute] int id)
         {
             var supplyInfo = _supplyService.GetSupplyInfoById(id);
+            ViewBag.SupplyInfo = supplyInfo;
 
-            return View("", supplyInfo);
+            return View(StringConstants.DisplayView);
         }
     }
 }
