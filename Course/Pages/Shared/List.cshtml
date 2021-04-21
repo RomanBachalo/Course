@@ -13,7 +13,7 @@
             </tr>
             @foreach (var info in ViewBag.InfoList)
             {
-                <tr>
+                <tr onclick="location.href="@ViewBag.Section/@((info.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains(ViewBag.Section + "Id")).FirstOrDefault().GetValue(info, null))"">
                     @foreach (var prop in info.GetType().GetProperties())
                     {
                         @if (ViewBag.Columns.Contains(prop.Name))

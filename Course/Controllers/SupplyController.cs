@@ -32,6 +32,7 @@ namespace Course.Controllers
                 .ToList();
 
             ViewBag.Columns.Insert(0, "SupplyId");
+            ViewBag.Section = PropertyConstants.Supply;
 
             return View(StringConstants.ListView);
         }
