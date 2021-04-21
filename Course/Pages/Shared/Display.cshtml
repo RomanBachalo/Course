@@ -6,7 +6,7 @@
     <html>
     <body>
         <table>
-            @foreach (var prop in ViewBag.Info.GetType().GetProperties())
+            @foreach (var prop in (ViewBag.Info.GetType().GetProperties() as PropertyInfo[]).Where((pr) => !Course.Constants.StringConstants.Filter.Contains(pr.Name)))
             {
                 string propName = prop.Name;
                 if (propName.Contains("Id"))
@@ -17,13 +17,21 @@
                 {
                     Func<PropertyInfo, bool> func = (prop) => prop.Name.Contains(propName.Replace("Name", "Id"));
                     var property = (ViewBag.Info.GetType().GetProperties() as PropertyInfo[]).Where(func).FirstOrDefault();
+                    var sectionLine = string.IsNullOrEmpty(propName.Replace("Name", "")) ? ViewBag.Section : propName.Replace("Name", "");
 
                     <tr>
                         <td>
                             @propName
                         </td>
                         <td>
-                            <a href="/GetData/@propName.Replace("Name", "")/@property.GetValue(ViewBag.Info, null)">@prop.GetValue(ViewBag.Info, null)</a>
+                            @if (property != null)
+                            {
+                                <a href="/GetData/@sectionLine/@property.GetValue(ViewBag.Info, null)">@prop.GetValue(ViewBag.Info, null)</a>
+                            }
+                            else
+                            {
+                                @prop.GetValue(ViewBag.Info, null)
+                            }
                         </td>
                     </tr>
                     //propName.Replace("Name", "Id");

@@ -9,5 +9,9 @@ namespace Course.Constants
     {
         public const string DisplayView = "Display";
         public const string ListView = "List";
+        public const string Filter = "Orders Factory SuppliedMaterial MaterialAtFactory" +
+            " MaterialInProduction SupplyRealizations MaterialColor OrderedFurnitures" +
+            " OrderedMaterials Furniture Productions Supplies FurnitureParameterFurniture" +
+            " City Position Suppliers Cities MaterialType MaterialColors";
     }
 }
