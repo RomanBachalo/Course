@@ -343,5 +343,220 @@ namespace Course.Controllers
 
             return null;
         }
+
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] object model)
+        {
+            switch (model.GetType().Name.Replace(StringConstants.ViewModel, ""))
+            {
+                case PropertyConstants.City:
+                    var cityModel = model as CityViewModel;
+
+                    var city = _furnitureCompanyContext.Cities.Where(entity => entity.CityId == cityModel.CityId).FirstOrDefault();
+
+                    city.Name = cityModel.CityName;
+                    city.RegionId = cityModel.RegionId;
+                    city.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Cities.Update(city);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Color:
+                    var colorModel = model as ColorViewModel;
+
+                    var color = _furnitureCompanyContext.Colors.Where(entity => entity.ColorId == colorModel.ColorId).FirstOrDefault();
+
+                    color.Name = colorModel.ColorName;
+                    color.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Colors.Update(color);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Customer:
+                    var customerModel = model as CustomerViewModel;
+
+                    var customer = _furnitureCompanyContext.Customers.Where(entity => entity.CustomerId == customerModel.CustomerId).FirstOrDefault();
+
+                    customer.Name = customerModel.CustomerName;
+                    customer.PhoneNumber = customerModel.PhoneNumber;
+                    customer.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Customers.Update(customer);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Employee:
+                    var employeeModel = model as EmployeeViewModel;
+
+                    var employee = _furnitureCompanyContext.Employees.Where(entity => entity.EmployeeId == employeeModel.EmployeeId).FirstOrDefault();
+
+                    employee.FullName = employeeModel.EmployeeName;
+                    employee.FactoryId = employeeModel.FactoryId;
+                    employee.PositionId = employeeModel.PositionId;
+                    employee.Email = employeeModel.Email;
+                    employee.PhoneNumber = employeeModel.PhoneNumber;
+                    employee.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Employees.Update(employee);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Factory:
+                    var factoryModel = model as FactoryViewModel;
+
+                    var factory = _furnitureCompanyContext.Factories.Where(entity => entity.FactoryId == factoryModel.FactoryId).FirstOrDefault();
+
+                    factory.Name = factoryModel.FactoryName;
+                    factory.CityId = factoryModel.CityId;
+                    factory.Address = factoryModel.Address;
+                    factory.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Factories.Update(factory);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Furniture:
+                    var furnitureModel = model as FurnitureViewModel;
+
+                    var furniture = _furnitureCompanyContext.Furnitures.Where(entity => entity.FurnitureId == furnitureModel.FurnitureId).FirstOrDefault();
+
+                    furniture.Name = furnitureModel.FurnitureName;
+                    furniture.FurnitureSubtypeId = furnitureModel.FurnitureSubtypeId;
+                    furniture.BasePrice = furnitureModel.BasePrice;
+                    furniture.Description = furnitureModel.Description;
+                    furniture.UpdateDate = DateTime.Now;
+
+                    // TODO: 
+                    //      Update parameters
+                    // 
+
+                    _furnitureCompanyContext.Furnitures.Update(furniture);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.FurnitureSubtype:
+                    var furnitureSubtypeModel = model as FurnitureSubtypeViewModel;
+
+                    var furnitureSubtype = _furnitureCompanyContext.FurnitureSubtypes.Where(entity => entity.FurnitureSubtypeId == furnitureSubtypeModel.FurnitureSubtypeId).FirstOrDefault();
+
+                    furnitureSubtype.Name = furnitureSubtypeModel.FurnitureSubtypeName;
+                    furnitureSubtype.FurnitureTypeId = furnitureSubtypeModel.FurnitureTypeId;
+                    furnitureSubtype.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.FurnitureSubtypes.Update(furnitureSubtype);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.FurnitureType:
+                    var furnitureTypeModel = model as FurnitureTypeViewModel;
+
+                    var furnitureType = _furnitureCompanyContext.FurnitureTypes.Where(entity => entity.FurnitureTypeId == furnitureTypeModel.FurnitureTypeId).FirstOrDefault();
+
+                    furnitureType.Name = furnitureTypeModel.FurnitureTypeName;
+                    furnitureType.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.FurnitureTypes.Update(furnitureType);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Material:
+                    var materialModel = model as MaterialViewModel;
+
+                    var material = _furnitureCompanyContext.Materials.Where(entity => entity.MaterialId == materialModel.MaterialId).FirstOrDefault();
+
+                    material.Name = materialModel.MaterialName;
+                    material.MaterialTypeId = materialModel.MaterialTypeId;
+                    material.Price = materialModel.Price;
+                    material.Description = materialModel.Description;
+                    material.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Materials.Update(material);
+
+                    var materialColor = _furnitureCompanyContext.MaterialColors.Where(entity => entity.MaterialId == materialModel.MaterialId).FirstOrDefault();
+
+                    materialColor.ColorId = materialModel.ColorId;
+                    materialColor.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.MaterialColors.Update(materialColor);
+
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.MaterialType:
+                    var materialTypeModel = model as MaterialTypeViewModel;
+
+                    var materilalType = _furnitureCompanyContext.MaterialTypes.Where(entity => entity.MaterialTypeId == materialTypeModel.MaterialTypeId).FirstOrDefault();
+
+                    materilalType.Name = materialTypeModel.MaterialTypeName;
+                    materilalType.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.MaterialTypes.Update(materilalType);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Order:
+                    var orderModel = model as OrderViewModel;
+
+                    await _orderService.UpdateOrder();
+
+                    break;
+                case PropertyConstants.Production:
+                    var productionModel = model as ProductionViewModel;
+
+                    await _productionService.UpdateProduction();
+
+                    break;
+                case PropertyConstants.Position:
+                    var positionModel = model as PositionViewModel;
+
+                    var position = _furnitureCompanyContext.Positions.Where(entity => entity.PositionId == positionModel.PrositionId).FirstOrDefault();
+
+                    position.Name = positionModel.PositionName;
+                    position.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Positions.Update(position);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Region:
+                    var regionModel = model as RegionViewModel;
+
+                    var region = _furnitureCompanyContext.Regions.Where(entity => entity.RegionId == regionModel.RegionId).FirstOrDefault();
+
+                    region.Name = regionModel.RegionName;
+                    region.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Regions.Update(region);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Supplier:
+                    var supplierModel = model as SupplierViewModel;
+
+                    var supplier = _furnitureCompanyContext.Suppliers.Where(entity => entity.SupplierId == supplierModel.SupplierId).FirstOrDefault();
+
+                    supplier.Name = supplierModel.SupplierName;
+                    supplier.CityId = supplierModel.CityId;
+                    supplier.Address = supplierModel.Address;
+                    supplier.Email = supplierModel.Email;
+                    supplier.PhoneNumber = supplierModel.PhoneNumber;
+                    supplier.UpdateDate = DateTime.Now;
+
+                    _furnitureCompanyContext.Suppliers.Update(supplier);
+                    await _furnitureCompanyContext.SaveChangesAsync();
+
+                    break;
+                case PropertyConstants.Supply:
+                    var supplyModel = model as SupplyViewModel;
+
+                    await _supplyService.CreateSupply();
+
+                    break;
+            }
+
+            return null;
+        }
     }
 }
