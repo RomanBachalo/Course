@@ -62,15 +62,21 @@ namespace Course.Controllers
                     break;
                 case PropertyConstants.Order:
                     viewModel = new OrderViewModel();
+                    ViewBag.Customer = _furnitureCompanyContext.Customers;
+                    ViewBag.Employee = _furnitureCompanyContext.Employees;
                     break;
                 case PropertyConstants.Production:
                     viewModel = new ProductionViewModel();
+                    ViewBag.Furniture = _furnitureCompanyContext.Furnitures;
+                    ViewBag.Material = _furnitureCompanyContext.Materials;
+                    ViewBag.Employee = _furnitureCompanyContext.Employees;
                     break;
                 case PropertyConstants.Supplier:
                     ViewBag.City = _furnitureCompanyContext.Cities;
                     break;
                 case PropertyConstants.Supply:
                     viewModel = new SupplierViewModel();
+                    ViewBag.City = _furnitureCompanyContext.Cities;
                     break;
             }
 
@@ -129,12 +135,16 @@ namespace Course.Controllers
                 case PropertyConstants.Order:
                     viewModel = new OrderViewModel();
                     ViewBag.Customer = _furnitureCompanyContext.Customers;
+                    ViewBag.Employee = _furnitureCompanyContext.Employees;
                     break;
                 case PropertyConstants.Position:
                     viewModel = new PositionViewModel();
                     break;
                 case PropertyConstants.Production:
                     viewModel = new ProductionViewModel();
+                    ViewBag.Furniture = _furnitureCompanyContext.Furnitures;
+                    ViewBag.Material = _furnitureCompanyContext.Materials;
+                    ViewBag.Employee = _furnitureCompanyContext.Employees;
                     break;
                 case PropertyConstants.Region:
                     viewModel = new RegionViewModel();
@@ -145,6 +155,7 @@ namespace Course.Controllers
                     break;
                 case PropertyConstants.Supply:
                     viewModel = new SupplierViewModel();
+                    ViewBag.City = _furnitureCompanyContext.Cities;
                     break;
             }
 

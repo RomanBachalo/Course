@@ -22,7 +22,7 @@ namespace Course.Services
         {
             var production = new Production
             {
-                OrderedFurnitureId = model.OrderedFurnitureId,
+                OrderedFurnitureId = model.FurnitureId,
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(2),
                 CreateDate = DateTime.Now,
@@ -48,7 +48,7 @@ namespace Course.Services
             {
                 ProductionId = production.ProductionId,
                 Count = 5,
-                MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Where(maf => maf.MaterialColorId == model.MaterialColorId).FirstOrDefault().MaterialsAtFactoryId,
+                MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Where(maf => maf.MaterialColorId == model.MaterialId).FirstOrDefault().MaterialsAtFactoryId,
                 CreateDate = DateTime.Now,
                 UpdateDate = DateTime.Now
             };
@@ -114,7 +114,7 @@ namespace Course.Services
         {
             var production = _furnitureCompanyContext.Productions.Where(prod => prod.ProductionId == model.ProductionId).FirstOrDefault();
 
-            production.OrderedFurnitureId = model.OrderedFurnitureId;
+            production.OrderedFurnitureId = model.FurnitureId;
             production.UpdateDate = DateTime.Now;
 
             _furnitureCompanyContext.Productions.Update(production);
@@ -142,7 +142,7 @@ namespace Course.Services
             {
                 ProductionId = production.ProductionId,
                 Count = 5,
-                MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Where(maf => maf.MaterialColorId == model.MaterialColorId).FirstOrDefault().MaterialsAtFactoryId,
+                MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Where(maf => maf.MaterialColorId == model.MaterialId).FirstOrDefault().MaterialsAtFactoryId,
                 CreateDate = DateTime.Now,
                 UpdateDate = DateTime.Now
             };
