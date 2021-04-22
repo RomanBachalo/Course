@@ -110,9 +110,45 @@ namespace Course.Services
             return productionInfo;
         }
 
-        public Task UpdateProduction(ProductionViewModel model)
+        public async Task UpdateProduction(ProductionViewModel model)
         {
-            throw new NotImplementedException();
+            var production = _furnitureCompanyContext.Productions.Where(prod => prod.ProductionId == model.ProductionId).FirstOrDefault();
+
+            production.OrderedFurnitureId = model.OrderedFurnitureId;
+            production.UpdateDate = DateTime.Now;
+
+            _furnitureCompanyContext.Productions.Update(production);
+
+            var oldProductionEmployee = _furnitureCompanyContext.ProductionEmployees.Where(prEm => prEm.ProductionId == model.ProductionId).ToList();
+            _furnitureCompanyContext.ProductionEmployees.RemoveRange(oldProductionEmployee);
+
+            foreach (var employeeId in model.Employees)
+            {
+                var productionEmployee = new ProductionEmployee
+                {
+                    EmployeeId = employeeId,
+                    ProductionId = production.ProductionId,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                await _furnitureCompanyContext.ProductionEmployees.AddAsync(productionEmployee);
+            }
+
+            var oldMaterialInProduction = _furnitureCompanyContext.MaterialsInProductions.Where(mip => mip.ProductionId == model.ProductionId).ToList();
+            _furnitureCompanyContext.MaterialsInProductions.RemoveRange(oldMaterialInProduction);
+
+            var materialInProduction = new MaterialsInProduction
+            {
+                ProductionId = production.ProductionId,
+                Count = 5,
+                MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Where(maf => maf.MaterialColorId == model.MaterialColorId).FirstOrDefault().MaterialsAtFactoryId,
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now
+            };
+
+            await _furnitureCompanyContext.MaterialsInProductions.AddAsync(materialInProduction);
+            await _furnitureCompanyContext.SaveChangesAsync();
         }
     }
 }
