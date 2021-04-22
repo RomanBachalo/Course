@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Course.Controllers
 {
+    [Route("[controller]")]
     public class CreateUpdateController : Controller
     {
         private readonly FurnitureCompanyContext _furnitureCompanyContext;
@@ -29,9 +30,78 @@ namespace Course.Controllers
             _productionService = productionService;
         }
 
-        public IActionResult Index()
+        [Route("create/{section}")]
+        public IActionResult Index([FromRoute] string section)
         {
-            return View();
+            ViewBag.Section = section;
+            object viewModel = null;
+
+            switch (section)
+            {
+                case PropertyConstants.City:
+                    viewModel = new CityViewModel();
+                    ViewBag.Region = _furnitureCompanyContext.Regions.ToList();
+                    break;
+                case PropertyConstants.Color:
+                    viewModel = new ColorViewModel();
+                    break;
+                case PropertyConstants.Customer:
+                    viewModel = new CustomerViewModel();
+                    break;
+                case PropertyConstants.Employee:
+                    viewModel = new EmployeeViewModel();
+                    ViewBag.Position = _furnitureCompanyContext.Positions;
+                    ViewBag.Factory = _furnitureCompanyContext.Factories;
+                    break;
+                case PropertyConstants.Factory:
+                    viewModel = new FactoryViewModel();
+                    ViewBag.City = _furnitureCompanyContext.Cities;
+                    break;
+                case PropertyConstants.Furniture:
+                    viewModel = new FurnitureViewModel();
+                    ViewBag.FurnitureSubtype = _furnitureCompanyContext.FurnitureSubtypes;
+                    break;
+                case PropertyConstants.FurnitureSubtype:
+                    viewModel = new FurnitureSubtypeViewModel();
+                    ViewBag.FurnitureType = _furnitureCompanyContext.FurnitureTypes;
+                    break;
+                case PropertyConstants.FurnitureType:
+                    viewModel = new FurnitureTypeViewModel();
+                    break;
+                case PropertyConstants.Material:
+                    viewModel = new MaterialViewModel();
+                    ViewBag.MaterialType = _furnitureCompanyContext.MaterialTypes;
+                    break;
+                case PropertyConstants.MaterialType:
+                    viewModel = new MaterialTypeViewModel();
+                    break;
+                case PropertyConstants.Order:
+                    viewModel = new OrderViewModel();
+                    break;
+                case PropertyConstants.Position:
+                    viewModel = new PositionViewModel();
+                    break;
+                case PropertyConstants.Production:
+                    viewModel = new ProductionViewModel();
+                    break;
+                case PropertyConstants.Region:
+                    viewModel = new RegionViewModel();
+                    break;
+                case PropertyConstants.Supplier:
+                    viewModel = new SupplierViewModel();
+                    ViewBag.City = _furnitureCompanyContext.Cities;
+                    break;
+                case PropertyConstants.Supply:
+                    viewModel = new SupplierViewModel();
+                    break;
+            }
+
+            ViewBag.ViewModel = viewModel;
+            return new ViewResult
+            {
+                ViewName = StringConstants.CreateView,
+                ViewData = ViewData
+            };
         }
 
         [HttpPost]

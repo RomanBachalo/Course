@@ -1,13 +1,34 @@
 ﻿@page
 @{
     @using System.Reflection;
+    @using System.Linq;
 
     <html>
     <body>
-        <form action="/" method="post">
-            @foreach (var prop in ViewBag.ViewModel.GetType().GetProperties())
+        <form id="createForm" action="/" method="post">
+            @foreach (var prop in (ViewBag.ViewModel.GetType().GetProperties() as PropertyInfo[]).Skip(1))
             {
-                <input type="text" name="@prop.Name" placeholder="prop.Name" />
+                @if (prop.Name.Contains("Id"))
+                {
+                    <label for="@prop.Name">@prop.Name.Replace("Id", "")</label>
+                    <select form="createForm" id="@prop.Name" name="@prop.Name">
+                        @{
+                            var viewData = (ViewBag.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))[0].GetValue(ViewBag, null)[prop.Name.Replace("Id", "")];
+                            @foreach (var item in viewData)
+                            {
+                                <option value="@((item.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains("Id")).FirstOrDefault().GetValue(item, null))">
+                                    @((item.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains("Name")).FirstOrDefault().GetValue(item, null))
+                                </option>
+                            }
+                        }
+                    </select>
+                }
+                else
+                {
+                    <label for="@prop.Name">@prop.Name</label>
+                    <input type="text" id="@prop.Name" name="@prop.Name" placeholder="@prop.Name" />
+                    <br />
+                }
             }
         </form>
     </body>
