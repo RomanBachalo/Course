@@ -284,7 +284,7 @@ namespace Course.Controllers
                 case PropertyConstants.Production:
                     var productionModel = model as ProductionViewModel;
 
-                    await _productionService.CreateProduction();
+                    await _productionService.CreateProduction(productionModel);
 
                     break;
                 case PropertyConstants.Position:
@@ -505,7 +505,7 @@ namespace Course.Controllers
                 case PropertyConstants.Production:
                     var productionModel = model as ProductionViewModel;
 
-                    await _productionService.UpdateProduction();
+                    await _productionService.UpdateProduction(productionModel);
 
                     break;
                 case PropertyConstants.Position:

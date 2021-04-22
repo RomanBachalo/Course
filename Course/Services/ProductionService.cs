@@ -1,6 +1,7 @@
 ﻿using Course.EntityFramework;
 using Course.Models;
 using Course.ViewModels;
+using Course.ViewModels.CreateViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace Course.Services
             _furnitureCompanyContext = furnitureCompanyContext;
         }
 
-        public Task CreateProduction()
+        public Task CreateProduction(ProductionViewModel model)
         {
             throw new NotImplementedException();
         }
@@ -75,7 +76,7 @@ namespace Course.Services
             return productionInfo;
         }
 
-        public Task UpdateProduction()
+        public Task UpdateProduction(ProductionViewModel model)
         {
             throw new NotImplementedException();
         }

@@ -1,5 +1,6 @@
 ﻿using Course.Models;
 using Course.ViewModels;
+using Course.ViewModels.CreateViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Course.Services
         ProductionInfo GetProductionInfoById(int id);
         List<ProductionInfo> GetAllProductionsInfos();
         Production GetProductionById(int id);
-        Task CreateProduction();
-        Task UpdateProduction();
+        Task CreateProduction(ProductionViewModel model);
+        Task UpdateProduction(ProductionViewModel model);
     }
 }

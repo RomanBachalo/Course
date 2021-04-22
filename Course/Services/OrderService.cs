@@ -17,9 +17,72 @@ namespace Course.Services
             _furnitureCompanyContext = furnitureCompanyContext ?? throw new ArgumentNullException(nameof(furnitureCompanyContext));
         }
 
-        public Task CreateOrder(OrderViewModel model)
+        public async Task CreateOrder(OrderViewModel model)
         {
-            throw new NotImplementedException();
+            var order = new Order
+            {
+                CustomerId = model.CustomerId,
+                EmployeeId = model.EmployeeId,
+                TotalSum = 0,
+                EndDate = DateTime.Now.AddDays(2),
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now
+            };
+
+            await _furnitureCompanyContext.Orders.AddAsync(order);
+
+            var orderedFurnitures = new List<OrderedFurniture>();
+            var orderedMaterials = new List<OrderedMaterial>();
+
+            for(int i = 0; i < model.OrderedFurniture.Count && i < model.OrderedMaterials.Count; ++i)
+            //foreach (var pair in model.OrderedFurniture)
+            {
+                var orderedFurniture = new OrderedFurniture
+                {
+                    FurnitureId = model.OrderedFurniture.ElementAt(i).Key,
+                    Amount = model.OrderedFurniture.ElementAt(i).Value,
+                    OrderId = order.OrderId,
+                    Height = 2,
+                    Width = 1,
+                    SizeSurchase = _furnitureCompanyContext.Furnitures.Where(fur => fur.FurnitureId == model.OrderedFurniture.ElementAt(i).Key).FirstOrDefault().BasePrice / 20,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                orderedFurnitures.Add(orderedFurniture);
+
+                await _furnitureCompanyContext.OrderedFurnitures.AddAsync(orderedFurniture);
+
+                var orderedMaterial = new OrderedMaterial
+                {
+                    OrderedFurnitureId = orderedFurniture.OrderedFurnitureId,
+                    MaterialColorId = model.OrderedMaterials.ElementAt(i).Key,
+                    Amount = model.OrderedMaterials.ElementAt(i).Value,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                orderedMaterials.Add(orderedMaterial);
+
+                await _furnitureCompanyContext.OrderedMaterials.AddAsync(orderedMaterial);
+            }
+
+            decimal orderedFurnituresSum = orderedFurnitures
+                .Sum(orFur => orFur.Amount * _furnitureCompanyContext.Furnitures
+                    .Where(fur => fur.FurnitureId == orFur.FurnitureId)
+                    .FirstOrDefault().BasePrice + orFur.SizeSurchase);
+
+            decimal orderedMaterialsSum = (from orderedMaterial in _furnitureCompanyContext.OrderedMaterials
+                                          join materialColor in _furnitureCompanyContext.MaterialColors on orderedMaterial.MaterialColorId equals materialColor.MaterialColorId
+                                          join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                                          where orderedMaterials.Select(mat => mat.MaterialColorId).Contains(orderedMaterial.MaterialColorId)
+                                          group material by orderedMaterial.MaterialColorId into mGroup
+                                          select mGroup.Sum(mater => mater.Price)).Sum();
+
+            order.TotalSum = orderedFurnituresSum + orderedMaterialsSum;
+
+            _furnitureCompanyContext.Orders.Update(order);
+            await _furnitureCompanyContext.SaveChangesAsync();
         }
 
         public List<OrderInfo> GetAllOrdersInfo()
@@ -79,9 +142,72 @@ namespace Course.Services
             return orderInfo;
         }
 
-        public Task UpdateOrder(OrderViewModel model)
+        public async Task UpdateOrder(OrderViewModel model)
         {
-            throw new NotImplementedException();
+            var order = new Order
+            {
+                CustomerId = model.CustomerId,
+                EmployeeId = model.EmployeeId,
+                TotalSum = 0,
+                EndDate = DateTime.Now.AddDays(2),
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now
+            };
+
+            await _furnitureCompanyContext.Orders.AddAsync(order);
+
+            var orderedFurnitures = new List<OrderedFurniture>();
+            var orderedMaterials = new List<OrderedMaterial>();
+
+            for (int i = 0; i < model.OrderedFurniture.Count && i < model.OrderedMaterials.Count; ++i)
+            //foreach (var pair in model.OrderedFurniture)
+            {
+                var orderedFurniture = new OrderedFurniture
+                {
+                    FurnitureId = model.OrderedFurniture.ElementAt(i).Key,
+                    Amount = model.OrderedFurniture.ElementAt(i).Value,
+                    OrderId = order.OrderId,
+                    Height = 2,
+                    Width = 1,
+                    SizeSurchase = _furnitureCompanyContext.Furnitures.Where(fur => fur.FurnitureId == model.OrderedFurniture.ElementAt(i).Key).FirstOrDefault().BasePrice / 20,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                orderedFurnitures.Add(orderedFurniture);
+
+                await _furnitureCompanyContext.OrderedFurnitures.AddAsync(orderedFurniture);
+
+                var orderedMaterial = new OrderedMaterial
+                {
+                    OrderedFurnitureId = orderedFurniture.OrderedFurnitureId,
+                    MaterialColorId = model.OrderedMaterials.ElementAt(i).Key,
+                    Amount = model.OrderedMaterials.ElementAt(i).Value,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                orderedMaterials.Add(orderedMaterial);
+
+                await _furnitureCompanyContext.OrderedMaterials.AddAsync(orderedMaterial);
+            }
+
+            decimal orderedFurnituresSum = orderedFurnitures
+                .Sum(orFur => orFur.Amount * _furnitureCompanyContext.Furnitures
+                    .Where(fur => fur.FurnitureId == orFur.FurnitureId)
+                    .FirstOrDefault().BasePrice + orFur.SizeSurchase);
+
+            decimal orderedMaterialsSum = (from orderedMaterial in _furnitureCompanyContext.OrderedMaterials
+                                           join materialColor in _furnitureCompanyContext.MaterialColors on orderedMaterial.MaterialColorId equals materialColor.MaterialColorId
+                                           join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                                           where orderedMaterials.Select(mat => mat.MaterialColorId).Contains(orderedMaterial.MaterialColorId)
+                                           group material by orderedMaterial.MaterialColorId into mGroup
+                                           select mGroup.Sum(mater => mater.Price)).Sum();
+
+            order.TotalSum = orderedFurnituresSum + orderedMaterialsSum;
+
+            _furnitureCompanyContext.Orders.Update(order);
+            await _furnitureCompanyContext.SaveChangesAsync();
         }
     }
 }

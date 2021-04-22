@@ -10,7 +10,7 @@ namespace Course.ViewModels.CreateViewModels
         public int? OrderId { get; set; }
         public int CustomerId { get; set; }
         public int EmployeeId { get; set; }
-        public Dictionary<int, int> OrderedFurniture { get; set; }
-        public Dictionary<int, int> OrderedMaterials { get; set; }
+        public Dictionary<int, short> OrderedFurniture { get; set; }
+        public Dictionary<int, short> OrderedMaterials { get; set; }
     }
 }
