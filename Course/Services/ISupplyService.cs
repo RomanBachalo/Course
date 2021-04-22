@@ -12,5 +12,7 @@ namespace Course.Services
         SupplyInfo GetSupplyInfoById(int id);
         List<SupplyInfo> GetAllSupplyInfos();
         Supply GetSupplyById(int id);
+        Task CreateSupply();
+        Task UpdateSupply();
     }
 }

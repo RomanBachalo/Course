@@ -12,5 +12,7 @@ namespace Course.Services
         OrderInfo GetOrderInfoById(int id);
         List<OrderInfo> GetAllOrdersInfo();
         Order GetOrderById(int id);
+        Task CreateOrder();
+        Task UpdateOrder();
     }
 }

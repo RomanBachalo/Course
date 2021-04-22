@@ -7,5 +7,7 @@ namespace Course.ViewModels.CreateViewModels
 {
     public class PositionViewModel
     {
+        public int? PrositionId { get; set; }
+        public string PositionName { get; set; }
     }
 }

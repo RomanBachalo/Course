@@ -8,7 +8,7 @@ namespace Course.ViewModels.CreateViewModels
     public class FurnitureViewModel
     {
         public int? FurnitureId { get; set; }
-        public int FurnitureSubtype { get; set; }
+        public int FurnitureSubtypeId { get; set; }
         public string FurnitureName { get; set; }
         public decimal BasePrice { get; set; }
         public string Description { get; set; }

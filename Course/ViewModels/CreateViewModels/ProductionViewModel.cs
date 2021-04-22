@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Course.ViewModels.CreateViewModels
 {
-    public class RegionViewModel
+    public class ProductionViewModel
     {
-        public int? RegionId { get; set; }
-        public string RegionName { get; set; }
+        public int? ProductionId { get; set; }
+        public List<int> Employees { get; set; }
     }
 }

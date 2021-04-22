@@ -16,6 +16,11 @@ namespace Course.Services
             _furnitureCompanyContext = furnitureCompanyContext ?? throw new ArgumentNullException(nameof(furnitureCompanyContext));
         }
 
+        public Task CreateOrder()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<OrderInfo> GetAllOrdersInfo()
         {
             var orderInfos = from order in _furnitureCompanyContext.Orders
@@ -71,6 +76,11 @@ namespace Course.Services
             if (orderInfo == null) throw new Exception("Order Info not found");
 
             return orderInfo;
+        }
+
+        public Task UpdateOrder()
+        {
+            throw new NotImplementedException();
         }
     }
 }

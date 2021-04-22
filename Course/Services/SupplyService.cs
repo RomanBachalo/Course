@@ -17,6 +17,11 @@ namespace Course.Services
             _furnitureCompanyContext = furnitureCompanyContext;
         }
 
+        public Task CreateSupply()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<SupplyInfo> GetAllSupplyInfos()
         {
             var supplyInfos = from supply in _furnitureCompanyContext.Supplies
@@ -68,6 +73,11 @@ namespace Course.Services
             if (supplyInfo == null) throw new Exception("Supply Info not found");
 
             return supplyInfo;
+        }
+
+        public Task UpdateSupply()
+        {
+            throw new NotImplementedException();
         }
     }
 }

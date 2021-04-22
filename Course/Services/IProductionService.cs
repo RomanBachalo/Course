@@ -12,5 +12,7 @@ namespace Course.Services
         ProductionInfo GetProductionInfoById(int id);
         List<ProductionInfo> GetAllProductionsInfos();
         Production GetProductionById(int id);
+        Task CreateProduction();
+        Task UpdateProduction();
     }
 }

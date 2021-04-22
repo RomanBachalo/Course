@@ -1,0 +1,15 @@
+﻿@page
+@{
+    @using System.Reflection;
+
+    <html>
+    <body>
+        <form action="/" method="post">
+            @foreach (var prop in ViewBag.ViewModel.GetType().GetProperties())
+            {
+                <input type="text" name="@prop.Name" placeholder="prop.Name" />
+            }
+        </form>
+    </body>
+</html>
+}

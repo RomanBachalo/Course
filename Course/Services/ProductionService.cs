@@ -17,6 +17,11 @@ namespace Course.Services
             _furnitureCompanyContext = furnitureCompanyContext;
         }
 
+        public Task CreateProduction()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<ProductionInfo> GetAllProductionsInfos()
         {
             var productionInfos = from production in _furnitureCompanyContext.Productions
@@ -68,6 +73,11 @@ namespace Course.Services
             if (productionInfo == null) throw new Exception("Production Info not found");
 
             return productionInfo;
+        }
+
+        public Task UpdateProduction()
+        {
+            throw new NotImplementedException();
         }
     }
 }
