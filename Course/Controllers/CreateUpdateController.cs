@@ -278,7 +278,7 @@ namespace Course.Controllers
                 case PropertyConstants.Order:
                     var orderModel = model as OrderViewModel;
 
-                    await _orderService.CreateOrder();
+                    await _orderService.CreateOrder(orderModel);
 
                     break;
                 case PropertyConstants.Production:
@@ -336,7 +336,7 @@ namespace Course.Controllers
                 case PropertyConstants.Supply:
                     var supplyModel = model as SupplyViewModel;
 
-                    await _supplyService.CreateSupply();
+                    await _supplyService.CreateSupply(supplyModel);
 
                     break;
             }
@@ -499,7 +499,7 @@ namespace Course.Controllers
                 case PropertyConstants.Order:
                     var orderModel = model as OrderViewModel;
 
-                    await _orderService.UpdateOrder();
+                    await _orderService.UpdateOrder(orderModel);
 
                     break;
                 case PropertyConstants.Production:
@@ -551,7 +551,7 @@ namespace Course.Controllers
                 case PropertyConstants.Supply:
                     var supplyModel = model as SupplyViewModel;
 
-                    await _supplyService.CreateSupply();
+                    await _supplyService.UpdateSupply(supplyModel);
 
                     break;
             }

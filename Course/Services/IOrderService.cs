@@ -1,5 +1,6 @@
 ﻿using Course.Models;
 using Course.ViewModels;
+using Course.ViewModels.CreateViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Course.Services
         OrderInfo GetOrderInfoById(int id);
         List<OrderInfo> GetAllOrdersInfo();
         Order GetOrderById(int id);
-        Task CreateOrder();
-        Task UpdateOrder();
+        Task CreateOrder(OrderViewModel model);
+        Task UpdateOrder(OrderViewModel model);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Course.EntityFramework;
 using Course.Models;
 using Course.ViewModels;
+using Course.ViewModels.CreateViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace Course.Services
             _furnitureCompanyContext = furnitureCompanyContext ?? throw new ArgumentNullException(nameof(furnitureCompanyContext));
         }
 
-        public Task CreateOrder()
+        public Task CreateOrder(OrderViewModel model)
         {
             throw new NotImplementedException();
         }
@@ -78,7 +79,7 @@ namespace Course.Services
             return orderInfo;
         }
 
-        public Task UpdateOrder()
+        public Task UpdateOrder(OrderViewModel model)
         {
             throw new NotImplementedException();
         }

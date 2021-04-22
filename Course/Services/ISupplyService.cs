@@ -1,5 +1,6 @@
 ﻿using Course.Models;
 using Course.ViewModels;
+using Course.ViewModels.CreateViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Course.Services
         SupplyInfo GetSupplyInfoById(int id);
         List<SupplyInfo> GetAllSupplyInfos();
         Supply GetSupplyById(int id);
-        Task CreateSupply();
-        Task UpdateSupply();
+        Task CreateSupply(SupplyViewModel model);
+        Task UpdateSupply(SupplyViewModel model);
     }
 }

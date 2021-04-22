@@ -1,6 +1,7 @@
 ﻿using Course.EntityFramework;
 using Course.Models;
 using Course.ViewModels;
+using Course.ViewModels.CreateViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +18,62 @@ namespace Course.Services
             _furnitureCompanyContext = furnitureCompanyContext;
         }
 
-        public Task CreateSupply()
+        public async Task CreateSupply(SupplyViewModel model)
         {
-            throw new NotImplementedException();
+            var supply = new Supply
+            {
+                SupplierId = model.SupplierId,
+                EmployeeId = model.EmployeeId,
+                TotalSum = 0,
+                EndDate = DateTime.Now.AddDays(2),
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now
+            };
+
+            await _furnitureCompanyContext.Supplies.AddAsync(supply);
+
+            var suppliedMaterials = new List<SuppliedMaterial>();
+
+            foreach (var pair in model.SuppliedMaterials)
+            {
+                var suppliedMaterial = new SuppliedMaterial
+                {
+                    SupplyId = supply.SupplyId,
+                    MaterialColorId = pair.Key,
+                    Amount = pair.Value,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                suppliedMaterial.SupplierPrice = (from materialColor in _furnitureCompanyContext.MaterialColors
+                                                  join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                                                  where materialColor.MaterialColorId == pair.Key
+                                                  select material.Price).Sum() * pair.Value;
+
+                suppliedMaterials.Add(suppliedMaterial);
+            }
+
+            supply.TotalSum = suppliedMaterials.Sum(supMaterial => supMaterial.SupplierPrice);
+
+            _furnitureCompanyContext.Supplies.Update(supply);
+            await _furnitureCompanyContext.SuppliedMaterials.AddRangeAsync(suppliedMaterials);
+
+            foreach (var suppliedMaterial in suppliedMaterials)
+            {
+                var supplyRealization = new SupplyRealization
+                {
+                    SuppliedMaterialsId = suppliedMaterial.SuppliedMaterialsId,
+                    MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Last().MaterialsAtFactoryId,
+                    EmployeeId = supply.EmployeeId,
+                    Count = (short)(suppliedMaterial.Amount + _furnitureCompanyContext.MaterialsAtFactories.Last().Count),
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                await _furnitureCompanyContext.SupplyRealizations.AddAsync(supplyRealization);
+            }
+
+            await _furnitureCompanyContext.SaveChangesAsync();
         }
 
         public List<SupplyInfo> GetAllSupplyInfos()
@@ -75,9 +129,70 @@ namespace Course.Services
             return supplyInfo;
         }
 
-        public Task UpdateSupply()
+        public async Task UpdateSupply(SupplyViewModel model)
         {
-            throw new NotImplementedException();
+            var supply = _furnitureCompanyContext.Supplies.Where(sup => sup.SupplyId == model.SupplyId).FirstOrDefault();
+
+            supply.SupplierId = model.SupplierId;
+            supply.EmployeeId = model.EmployeeId;
+
+            var oldSuppliedMaterials = _furnitureCompanyContext.SuppliedMaterials.Where(supMaterial => supMaterial.SupplyId == model.SupplyId).ToList();
+
+            foreach (var supplyMaterial in oldSuppliedMaterials)
+            {
+                var supplyRealizations = _furnitureCompanyContext.SupplyRealizations
+                    .Where(real => real.SuppliedMaterialsId == supplyMaterial.SuppliedMaterialsId);
+
+                if(supplyRealizations != null)
+                {
+                    _furnitureCompanyContext.SupplyRealizations.RemoveRange(supplyRealizations);
+                }
+            }
+
+            _furnitureCompanyContext.SuppliedMaterials.RemoveRange(oldSuppliedMaterials);
+
+            var suppliedMaterials = new List<SuppliedMaterial>();
+
+            foreach (var pair in model.SuppliedMaterials)
+            {
+                var suppliedMaterial = new SuppliedMaterial
+                {
+                    SupplyId = supply.SupplyId,
+                    MaterialColorId = pair.Key,
+                    Amount = pair.Value,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                suppliedMaterial.SupplierPrice = (from materialColor in _furnitureCompanyContext.MaterialColors
+                                                  join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                                                  where materialColor.MaterialColorId == pair.Key
+                                                  select material.Price).Sum() * pair.Value;
+
+                suppliedMaterials.Add(suppliedMaterial);
+            }
+
+            supply.TotalSum = suppliedMaterials.Sum(supMaterial => supMaterial.SupplierPrice);
+
+            _furnitureCompanyContext.Supplies.Update(supply);
+            await _furnitureCompanyContext.SuppliedMaterials.AddRangeAsync(suppliedMaterials);
+
+            foreach (var suppliedMaterial in suppliedMaterials)
+            {
+                var supplyRealization = new SupplyRealization
+                {
+                    SuppliedMaterialsId = suppliedMaterial.SuppliedMaterialsId,
+                    MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Last().MaterialsAtFactoryId,
+                    EmployeeId = supply.EmployeeId,
+                    Count = (short)(suppliedMaterial.Amount + _furnitureCompanyContext.MaterialsAtFactories.Last().Count),
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
+                };
+
+                await _furnitureCompanyContext.SupplyRealizations.AddAsync(supplyRealization);
+            }
+
+            await _furnitureCompanyContext.SaveChangesAsync();
         }
     }
 }
