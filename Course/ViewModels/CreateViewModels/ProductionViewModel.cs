@@ -9,7 +9,7 @@ namespace Course.ViewModels.CreateViewModels
     {
         public int? ProductionId { get; set; }
         public List<int> Employees { get; set; }
-        public Dictionary<int, short> Furnitures { get; set; }
-        public Dictionary<int, short> Materials { get; set; }
+        public int OrderedFurnitureId { get; set; }
+        public int MaterialColorId { get; set; }
     }
 }
