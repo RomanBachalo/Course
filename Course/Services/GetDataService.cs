@@ -1,4 +1,5 @@
-﻿using Course.EntityFramework;
+﻿using Course.Constants;
+using Course.EntityFramework;
 using Course.Models;
 using Course.ViewModels;
 using System;
@@ -11,10 +12,19 @@ namespace Course.Services
     public class GetDataService : IGetDataService
     {
         private readonly FurnitureCompanyContext _furnitureCompanyContext;
+        private readonly ISupplyService _supplyService;
+        private readonly IOrderService _orderService;
+        private readonly IProductionService _productionService;
 
-        public GetDataService(FurnitureCompanyContext furnitureCompanyContext)
+        public GetDataService(FurnitureCompanyContext furnitureCompanyContext,
+                              ISupplyService supplyService,
+                              IOrderService orderService,
+                              IProductionService productionService)
         {
             _furnitureCompanyContext = furnitureCompanyContext;
+            _supplyService = supplyService;
+            _orderService = orderService;
+            _productionService = productionService;
         }
 
         public List<FactoryInfo> GetAllFactoryInfos()
@@ -144,6 +154,66 @@ namespace Course.Services
             if (materialInfo == null) throw new Exception("Material Info not found");
 
             return materialInfo;
+        }
+
+        public object GetDataByPropertyAndId(string property, int id)
+        {
+            object result = null;
+            switch (property)
+            {
+                case PropertyConstants.City:
+                    result = _furnitureCompanyContext.Cities.Where(model => model.CityId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Color:
+                    result = _furnitureCompanyContext.Colors.Where(model => model.ColorId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Customer:
+                    result = _furnitureCompanyContext.Customers.Where(model => model.CustomerId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Employee:
+                    result = _furnitureCompanyContext.Employees.Where(model => model.EmployeeId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Factory:
+                    result = GetFactoryInfoById(id);
+                    break;
+                case PropertyConstants.Furniture:
+                    result = GetFurnitureInfoById(id);
+                    break;
+                case PropertyConstants.FurnitureSubtype:
+                    result = _furnitureCompanyContext.FurnitureSubtypes.Where(model => model.FurnitureSubtypeId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.FurnitureType:
+                    result = _furnitureCompanyContext.FurnitureTypes.Where(model => model.FurnitureTypeId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Material:
+                    result = _furnitureCompanyContext.Materials.Where(model => model.MaterialId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.MaterialType:
+                    result = _furnitureCompanyContext.MaterialTypes.Where(model => model.MaterialTypeId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Order:
+                    result = _orderService.GetOrderInfoById(id);
+                    break;
+                case PropertyConstants.Position:
+                    result = _furnitureCompanyContext.Positions.Where(model => model.PositionId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Production:
+                    result = _productionService.GetProductionInfoById(id);
+                    break;
+                case PropertyConstants.Region:
+                    result = _furnitureCompanyContext.Regions.Where(model => model.RegionId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Supplier:
+                    result = _furnitureCompanyContext.Suppliers.Where(model => model.SupplierId == id).FirstOrDefault();
+                    break;
+                case PropertyConstants.Supply:
+                    result = _supplyService.GetSupplyInfoById(id);
+                    break;
+            }
+
+            if (result == null) throw new Exception($"{property} not found");
+
+            return result;
         }
     }
 }

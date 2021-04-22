@@ -18,5 +18,6 @@ namespace Course.Services
         FurnitureInfo GetFurnitureInfoById(int id);
         List<FurnitureInfo> GetAllFurnitureInfos();
         Furniture GetFurnitureById(int id);
+        object GetDataByPropertyAndId(string property, int id);
     }
 }

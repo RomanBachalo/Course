@@ -18,20 +18,71 @@ namespace Course.Controllers
         private readonly ISupplyService _supplyService;
         private readonly IOrderService _orderService;
         private readonly IProductionService _productionService;
+        private readonly IGetDataService _getDataService;
 
         public CreateUpdateController(FurnitureCompanyContext furnitureCompanyContext,
                                       ISupplyService supplyService,
                                       IOrderService orderService,
-                                      IProductionService productionService)
+                                      IProductionService productionService,
+                                      IGetDataService getDataService)
         {
             _furnitureCompanyContext = furnitureCompanyContext;
             _supplyService = supplyService;
             _orderService = orderService;
             _productionService = productionService;
+            _getDataService = getDataService;
         }
 
+        [Route("update/{section}/{id}")]
+        public IActionResult UpdateIndex([FromRoute] string section, [FromRoute] int id)
+        {
+            ViewBag.Section = section;
+            object viewModel = _getDataService.GetDataByPropertyAndId(section, id);
+
+            switch (section)
+            {
+                case PropertyConstants.City:
+                    ViewBag.Region = _furnitureCompanyContext.Regions.ToList();
+                    break;
+                case PropertyConstants.Employee:
+                    ViewBag.Position = _furnitureCompanyContext.Positions;
+                    ViewBag.Factory = _furnitureCompanyContext.Factories;
+                    break;
+                case PropertyConstants.Factory:
+                    ViewBag.City = _furnitureCompanyContext.Cities;
+                    break;
+                case PropertyConstants.Furniture:
+                    ViewBag.FurnitureSubtype = _furnitureCompanyContext.FurnitureSubtypes;
+                    break;
+                case PropertyConstants.FurnitureSubtype:
+                    ViewBag.FurnitureType = _furnitureCompanyContext.FurnitureTypes;
+                    break;
+                case PropertyConstants.Material:
+                    ViewBag.MaterialType = _furnitureCompanyContext.MaterialTypes;
+                    break;
+                case PropertyConstants.Order:
+                    viewModel = new OrderViewModel();
+                    break;
+                case PropertyConstants.Production:
+                    viewModel = new ProductionViewModel();
+                    break;
+                case PropertyConstants.Supplier:
+                    ViewBag.City = _furnitureCompanyContext.Cities;
+                    break;
+                case PropertyConstants.Supply:
+                    viewModel = new SupplierViewModel();
+                    break;
+            }
+
+            ViewBag.ViewModel = viewModel;
+            return new ViewResult
+            {
+                ViewName = StringConstants.CreateView,
+                ViewData = ViewData
+            };
+        }
         [Route("create/{section}")]
-        public IActionResult Index([FromRoute] string section)
+        public IActionResult CreateIndex([FromRoute] string section)
         {
             ViewBag.Section = section;
             object viewModel = null;
@@ -77,6 +128,7 @@ namespace Course.Controllers
                     break;
                 case PropertyConstants.Order:
                     viewModel = new OrderViewModel();
+                    ViewBag.Customer = _furnitureCompanyContext.Customers;
                     break;
                 case PropertyConstants.Position:
                     viewModel = new PositionViewModel();
