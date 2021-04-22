@@ -34,7 +34,7 @@ namespace Course.Services
             var orderedFurnitures = new List<OrderedFurniture>();
             var orderedMaterials = new List<OrderedMaterial>();
 
-            for(int i = 0; i < model.OrderedFurniture.Count && i < model.OrderedMaterials.Count; ++i)
+            for (int i = 0; i < model.OrderedFurniture.Count && i < model.OrderedMaterials.Count; ++i)
             //foreach (var pair in model.OrderedFurniture)
             {
                 var orderedFurniture = new OrderedFurniture
@@ -73,11 +73,11 @@ namespace Course.Services
                     .FirstOrDefault().BasePrice + orFur.SizeSurchase);
 
             decimal orderedMaterialsSum = (from orderedMaterial in _furnitureCompanyContext.OrderedMaterials
-                                          join materialColor in _furnitureCompanyContext.MaterialColors on orderedMaterial.MaterialColorId equals materialColor.MaterialColorId
-                                          join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
-                                          where orderedMaterials.Select(mat => mat.MaterialColorId).Contains(orderedMaterial.MaterialColorId)
-                                          group material by orderedMaterial.MaterialColorId into mGroup
-                                          select mGroup.Sum(mater => mater.Price)).Sum();
+                                           join materialColor in _furnitureCompanyContext.MaterialColors on orderedMaterial.MaterialColorId equals materialColor.MaterialColorId
+                                           join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                                           where orderedMaterials.Select(mat => mat.MaterialColorId).Contains(orderedMaterial.MaterialColorId)
+                                           group material by orderedMaterial.MaterialColorId into mGroup
+                                           select mGroup.Sum(mater => mater.Price)).Sum();
 
             order.TotalSum = orderedFurnituresSum + orderedMaterialsSum;
 
@@ -88,36 +88,36 @@ namespace Course.Services
         public List<OrderInfo> GetAllOrdersInfo()
         {
             var orderInfos = from order in _furnitureCompanyContext.Orders
-                        join customer in _furnitureCompanyContext.Customers on order.CustomerId equals customer.CustomerId
-                        join employee in _furnitureCompanyContext.Employees on order.EmployeeId equals employee.EmployeeId
-                        join factory in _furnitureCompanyContext.Factories on employee.FactoryId equals factory.FactoryId
-                        join orderedFurniture in _furnitureCompanyContext.OrderedFurnitures on order.OrderId equals orderedFurniture.OrderId
-                        join furniture in _furnitureCompanyContext.Furnitures on orderedFurniture.FurnitureId equals furniture.FurnitureId
-                        join orderedMaterials in _furnitureCompanyContext.OrderedMaterials on orderedFurniture.OrderedFurnitureId equals orderedMaterials.OrderedFurnitureId
-                        join materialColor in _furnitureCompanyContext.MaterialColors on orderedMaterials.MaterialColorId equals materialColor.MaterialColorId
-                        join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
-                        orderby order.OrderId
-                        select new OrderInfo
-                        {
-                            OrderId = order.OrderId,
-                            CustomerId = customer.CustomerId,
-                            CustomerName = customer.Name,
-                            EmployeeId = employee.EmployeeId,
-                            EmployeeName = employee.FullName,
-                            FactoryId = factory.FactoryId,
-                            FactoryName = factory.Name,
-                            FurnitureId = furniture.FurnitureId,
-                            FurnitureName = furniture.Name,
-                            FurnitureHeight = orderedFurniture.Height,
-                            FurnitureWidth = orderedFurniture.Width,
-                            SizeSurchase = orderedFurniture.SizeSurchase,
-                            FurnitureAmount = orderedFurniture.Amount,
-                            MaterialId = material.MaterialId,
-                            MaterialName = material.Name,
-                            MaterialAmount = orderedMaterials.Amount,
-                            TotalSum = order.TotalSum,
-                            EndDate = order.EndDate
-                        };
+                             join customer in _furnitureCompanyContext.Customers on order.CustomerId equals customer.CustomerId
+                             join employee in _furnitureCompanyContext.Employees on order.EmployeeId equals employee.EmployeeId
+                             join factory in _furnitureCompanyContext.Factories on employee.FactoryId equals factory.FactoryId
+                             join orderedFurniture in _furnitureCompanyContext.OrderedFurnitures on order.OrderId equals orderedFurniture.OrderId
+                             join furniture in _furnitureCompanyContext.Furnitures on orderedFurniture.FurnitureId equals furniture.FurnitureId
+                             join orderedMaterials in _furnitureCompanyContext.OrderedMaterials on orderedFurniture.OrderedFurnitureId equals orderedMaterials.OrderedFurnitureId
+                             join materialColor in _furnitureCompanyContext.MaterialColors on orderedMaterials.MaterialColorId equals materialColor.MaterialColorId
+                             join material in _furnitureCompanyContext.Materials on materialColor.MaterialId equals material.MaterialId
+                             orderby order.OrderId
+                             select new OrderInfo
+                             {
+                                 OrderId = order.OrderId,
+                                 CustomerId = customer.CustomerId,
+                                 CustomerName = customer.Name,
+                                 EmployeeId = employee.EmployeeId,
+                                 EmployeeName = employee.FullName,
+                                 FactoryId = factory.FactoryId,
+                                 FactoryName = factory.Name,
+                                 FurnitureId = furniture.FurnitureId,
+                                 FurnitureName = furniture.Name,
+                                 FurnitureHeight = orderedFurniture.Height,
+                                 FurnitureWidth = orderedFurniture.Width,
+                                 SizeSurchase = orderedFurniture.SizeSurchase,
+                                 FurnitureAmount = orderedFurniture.Amount,
+                                 MaterialId = material.MaterialId,
+                                 MaterialName = material.Name,
+                                 MaterialAmount = orderedMaterials.Amount,
+                                 TotalSum = order.TotalSum,
+                                 EndDate = order.EndDate
+                             };
 
             if (orderInfos == null) throw new Exception("Order Infos not found");
 
@@ -144,20 +144,31 @@ namespace Course.Services
 
         public async Task UpdateOrder(OrderViewModel model)
         {
-            var order = new Order
-            {
-                CustomerId = model.CustomerId,
-                EmployeeId = model.EmployeeId,
-                TotalSum = 0,
-                EndDate = DateTime.Now.AddDays(2),
-                CreateDate = DateTime.Now,
-                UpdateDate = DateTime.Now
-            };
+            var order = _furnitureCompanyContext.Orders.Where(ord => ord.OrderId == model.OrderId).FirstOrDefault();
 
-            await _furnitureCompanyContext.Orders.AddAsync(order);
+            order.CustomerId = model.CustomerId;
+            order.EmployeeId = model.EmployeeId;
+            order.EndDate = DateTime.Now.AddDays(2);
+            order.UpdateDate = DateTime.Now;
+
+            _furnitureCompanyContext.Orders.Update(order);
 
             var orderedFurnitures = new List<OrderedFurniture>();
             var orderedMaterials = new List<OrderedMaterial>();
+
+            var oldOrderedFurnitures = _furnitureCompanyContext.OrderedFurnitures
+                .Where(orFur => orFur.OrderId == model.OrderId)
+                .ToList();
+
+            var oldOrderedMaterials = _furnitureCompanyContext.OrderedMaterials
+                .Where(orMat => oldOrderedFurnitures
+                    .Select(orFur => orFur.OrderedFurnitureId)
+                    .ToList()
+                    .Contains((int)orMat.OrderedFurnitureId))
+                .ToList();
+
+            _furnitureCompanyContext.OrderedMaterials.RemoveRange(oldOrderedMaterials);
+            _furnitureCompanyContext.OrderedFurnitures.RemoveRange(oldOrderedFurnitures);
 
             for (int i = 0; i < model.OrderedFurniture.Count && i < model.OrderedMaterials.Count; ++i)
             //foreach (var pair in model.OrderedFurniture)
