@@ -38,6 +38,7 @@ namespace Course.Controllers
 
             ViewBag.Info = result;
             ViewBag.Section = property;
+            ViewBag.Id = id;
 
             return View(StringConstants.DisplayView);
         }

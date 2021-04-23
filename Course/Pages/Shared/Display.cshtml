@@ -13,25 +13,9 @@
 
         <script>
 
-            const formToJSON = (elements) =>
-                [].reduce.call(
-                    elements,
-                    (data, element) => {
-                        data[element.name] = element.value;
-                        return data;
-                    },
-                    {},
-                );
+            const handleGetUpdate = () => {
 
-            const handleFormSubmit = () => {
-
-                $.ajax({
-                    type: "GET",
-                    url: "/CreateUpdate/update/@ViewBag.Section/@ViewBag.Id",
-                    data: JSON.stringify(data, null, '  '),
-                    dataType: "json",
-                    contentType: "application/json"
-                });
+                window.location.href = "/CreateUpdate/update/@ViewBag.Section/@ViewBag.Id";
 
             };
 
@@ -82,7 +66,7 @@
                 }
             }
         </table>
-        <input type="button" value="Update" onclick="handleFormSubmit()"/>
+        <input type="button" value="Update" onclick="handleGetUpdate()"/>
     </body>
 </html>
 }

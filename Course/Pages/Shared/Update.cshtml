@@ -22,16 +22,16 @@
                     {},
                 );
 
-            const handleFormSubmit = () => {
+            const handleUpdateFormSubmit = () => {
                 // Stop the form from submitting since we’re handling that with AJAX.
-                const form = document.getElementById('createForm');
+                const form = document.getElementById('updateForm');
 
                 // Call our function to get the form data.
                 const data = formToJSON(form.elements);
 
                 $.ajax({
-                    type: "POST",
-                    url: "/CreateUpdate/create/@ViewBag.Section",
+                    type: "PUT",
+                    url: "/CreateUpdate/update/@ViewBag.Section",
                     data: JSON.stringify(data, null, '  '),
                     dataType: "json",
                     contentType: "application/json"
@@ -47,7 +47,7 @@
                 var formData = JSON.stringify($("#updateForm").serializeArray());
 
                 $.ajax({
-                    type: "POST",
+                    type: "PUT",
                     url: "/CreateUpdate/update/@ViewBag.Section",
                     data: formData,
                     dataType: "json",
@@ -110,7 +110,7 @@
             }
             <br />
             @*<input type="submit" value="Create" />*@
-            <input type="button" value="Update" onclick="handleFormSubmit()" />
+            <input type="button" value="Update" onclick="handleUpdateFormSubmit()" />
         </form>
     </body>
 </html>

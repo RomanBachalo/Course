@@ -8,6 +8,7 @@ namespace Course.Constants
     public class StringConstants
     {
         public const string ViewModel = "ViewModel";
+        public const string HomeView = "Index";
         public const string CreateView = "Create";
         public const string UpdateView = "Update";
         public const string DisplayView = "Display";

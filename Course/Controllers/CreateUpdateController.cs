@@ -407,7 +407,7 @@ namespace Course.Controllers
                     break;
             }
 
-            return null;
+            return View(StringConstants.HomeView);
         }
 
         [HttpPut, Route("update/{element}")]
@@ -622,7 +622,7 @@ namespace Course.Controllers
                     break;
             }
 
-            return null;
+            return View(StringConstants.HomeView);
         }
     }
 }
