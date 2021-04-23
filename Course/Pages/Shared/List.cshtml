@@ -3,12 +3,24 @@
     @using System.Reflection
 
     <html>
+<head>
+    <style>
+        table.table-columns td {
+            padding-left: 5px;
+            padding-right: 15px;
+        }
+        table.table-columns th {
+            padding-left: 5px;
+            padding-right: 15px;
+        }
+    </style>
+</head>
     <body>
-        <table>
+        <table class="table-columns">
             <tr>
                 @foreach (var column in ViewBag.Columns)
                 {
-                    <th>@column</th>
+                    <th>@column.Replace("Name","").Replace("Id","")</th>
                 }
             </tr>
             @foreach (var info in ViewBag.InfoList)

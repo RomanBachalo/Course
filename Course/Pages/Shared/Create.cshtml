@@ -4,6 +4,13 @@
     @using System.Linq;
 
     <html>
+    <head>
+        <style>
+            .property-name {
+                color: #181818;
+            }
+        </style>
+    </head>
     <body>
         <form id="createForm" action="/" method="post">
             @foreach (var prop in (ViewBag.ViewModel.GetType().GetProperties() as PropertyInfo[]).Skip(1))
@@ -11,6 +18,7 @@
                 @if (prop.Name.Contains("Id"))
                 {
                     <label for="@prop.Name">@prop.Name.Replace("Id", "")</label>
+                    <br />
                     <select form="createForm" id="@prop.Name" name="@prop.Name">
                         @{
                             var viewData = (ViewBag.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))[0].GetValue(ViewBag, null)[prop.Name.Replace("Id", "")];
@@ -27,11 +35,13 @@
                 else
                 {
                     <label for="@prop.Name">@prop.Name</label>
+                    <br />
                     <input type="text" id="@prop.Name" name="@prop.Name" placeholder="@prop.Name" />
                     <br />
                 }
             }
-            <input type="submit" value="Create"/>
+            <br />
+            <input type="submit" value="Create" />
         </form>
     </body>
 </html>

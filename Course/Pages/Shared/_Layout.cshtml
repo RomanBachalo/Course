@@ -6,6 +6,50 @@
     <title>@ViewData["Title"] - Course</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
+    <style>
+        .dropbtn {
+            background-color: white;
+            color: #343a40;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f1f1f1;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown:hover .dropbtn {
+            background-color: lightgray;
+        }
+    </style>
+
 </head>
 <body>
     <header>
@@ -19,10 +63,35 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <div class="nav-link text-dark dropdown">
+                                <button class="dropbtn">List</button>
+                                <div class="dropdown-content">
+                                    <a href="/Order">Order</a>
+                                    <a href="/Supply">Supply</a>
+                                    <a href="/Production">Production</a>
+                                </div>
+                            </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <div class="nav-link text-dark dropdown">
+                                <button class="dropbtn">Create</button>
+                                <div class="dropdown-content">
+                                    <a href="/CreateUpdate/create/Order">Order</a>
+                                    <a href="/CreateUpdate/create/Supply">Supply</a>
+                                    <a href="/CreateUpdate/create/Production">Production</a>
+                                    <a href="/CreateUpdate/create/Color">Color</a>
+                                    <a href="/CreateUpdate/create/Customer">Customer</a>
+                                    <a href="/CreateUpdate/create/Employee">Employee</a>
+                                    <a href="/CreateUpdate/create/Factory">Factory</a>
+                                    <a href="/CreateUpdate/create/Furniture">Furniture</a>
+                                    <a href="/CreateUpdate/create/FurnitureType">FurnitureType</a>
+                                    <a href="/CreateUpdate/create/FurnitureSubtype">FurnitureSubtype</a>
+                                    <a href="/CreateUpdate/create/Material">Material</a>
+                                    <a href="/CreateUpdate/create/MaterialType">MaterialType</a>
+                                    <a href="/CreateUpdate/create/Position">Position</a>
+                                    <a href="/CreateUpdate/create/Region">Region</a>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -34,12 +103,6 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - Course - <a asp-area="" asp-page="/Privacy">Privacy</a>
-        </div>
-    </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
