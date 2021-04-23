@@ -31,18 +31,15 @@ namespace Course.Services
 
             await _furnitureCompanyContext.Productions.AddAsync(production);
 
-            foreach (var employeeId in model.Employees)
+            var productionEmployee = new ProductionEmployee
             {
-                var productionEmployee = new ProductionEmployee
-                {
-                    EmployeeId = employeeId,
-                    ProductionId = production.ProductionId,
-                    CreateDate = DateTime.Now,
-                    UpdateDate = DateTime.Now
-                };
+                EmployeeId = model.EmployeeId,
+                ProductionId = production.ProductionId,
+                CreateDate = DateTime.Now,
+                UpdateDate = DateTime.Now
+            };
 
-                await _furnitureCompanyContext.ProductionEmployees.AddAsync(productionEmployee);
-            }
+            await _furnitureCompanyContext.ProductionEmployees.AddAsync(productionEmployee);
 
             var materialInProduction = new MaterialsInProduction
             {
@@ -122,18 +119,16 @@ namespace Course.Services
             var oldProductionEmployee = _furnitureCompanyContext.ProductionEmployees.Where(prEm => prEm.ProductionId == model.ProductionId).ToList();
             _furnitureCompanyContext.ProductionEmployees.RemoveRange(oldProductionEmployee);
 
-            foreach (var employeeId in model.Employees)
-            {
+
                 var productionEmployee = new ProductionEmployee
                 {
-                    EmployeeId = employeeId,
+                    EmployeeId = model.EmployeeId,
                     ProductionId = production.ProductionId,
                     CreateDate = DateTime.Now,
                     UpdateDate = DateTime.Now
                 };
 
                 await _furnitureCompanyContext.ProductionEmployees.AddAsync(productionEmployee);
-            }
 
             var oldMaterialInProduction = _furnitureCompanyContext.MaterialsInProductions.Where(mip => mip.ProductionId == model.ProductionId).ToList();
             _furnitureCompanyContext.MaterialsInProductions.RemoveRange(oldMaterialInProduction);
