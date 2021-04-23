@@ -4,6 +4,13 @@
     @using System.Linq;
 
     <html>
+    <head>
+        <style>
+            .property-name {
+                color: #0e0e0e;
+            }
+        </style>
+    </head>
     <body>
         <table>
             @foreach (var prop in (ViewBag.Info.GetType().GetProperties() as PropertyInfo[]).Where((pr) => !Course.Constants.StringConstants.Filter.Contains(pr.Name)))
@@ -21,16 +28,16 @@
 
                     <tr>
                         <td>
-                            @propName
+                            <p class="property-name">@propName</p>
                         </td>
                         <td>
                             @if (property != null)
                             {
-                                <a href="/GetData/@sectionLine/@property.GetValue(ViewBag.Info, null)">@prop.GetValue(ViewBag.Info, null)</a>
+                                <p><a href="/GetData/@sectionLine/@property.GetValue(ViewBag.Info, null)">@prop.GetValue(ViewBag.Info, null)</a></p>
                             }
                             else
                             {
-                                @prop.GetValue(ViewBag.Info, null)
+                                <p>@prop.GetValue(ViewBag.Info, null)</p>
                             }
                         </td>
                     </tr>
@@ -40,10 +47,10 @@
                 {
                     <tr>
                         <td>
-                            @propName
+                            <p class="property-name">@propName</p>
                         </td>
                         <td>
-                            @prop.GetValue(ViewBag.Info, null)
+                            <p>@prop.GetValue(ViewBag.Info, null)</p>
                         </td>
                     </tr>
                 }

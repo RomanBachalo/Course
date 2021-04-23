@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Course.Controllers
@@ -167,13 +168,14 @@ namespace Course.Controllers
             };
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] object model)
+        [HttpPost, Route("create/{element}")]
+        public async Task<IActionResult> Create([FromBody] object model, [FromRoute] string element)
         {
-            switch (model.GetType().Name.Replace(StringConstants.ViewModel, ""))
+            switch (element)
             {
                 case PropertyConstants.City:
-                    var cityModel = model as CityViewModel;
+
+                    var cityModel = Newtonsoft.Json.JsonConvert.DeserializeObject<CityViewModel>(model.ToString());
 
                     var city = new City
                     {
@@ -188,7 +190,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Color:
-                    var colorModel = model as ColorViewModel;
+                    var colorModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ColorViewModel>(model.ToString());
 
                     var color = new Color
                     {
@@ -407,7 +409,7 @@ namespace Course.Controllers
             return null;
         }
 
-        [HttpPut]
+        [HttpPut, Route("update")]
         public async Task<IActionResult> Update([FromBody] object model)
         {
             switch (model.GetType().Name.Replace(StringConstants.ViewModel, ""))

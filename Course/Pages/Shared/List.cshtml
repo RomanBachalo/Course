@@ -28,9 +28,26 @@
                 <tr onclick="location.href="@ViewBag.Section/@((info.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains(ViewBag.Section + "Id")).FirstOrDefault().GetValue(info, null))"">
                     @foreach (var prop in info.GetType().GetProperties())
                     {
+                        Func<PropertyInfo, bool> func = (proper) =>
+                        {
+                            return proper.Name.Contains("Name") || proper.Name.Contains("Id");
+                        };
+                        var property = (info.GetType().GetProperties() as PropertyInfo[]).Where(func).FirstOrDefault();
+                        var sectionLine = string.IsNullOrEmpty(prop.Name.Replace("Name", "").Replace("Id","")) ? ViewBag.Section : prop.Name.Replace("Name", "").Replace("Id", "");
+
                         @if (ViewBag.Columns.Contains(prop.Name))
                         {
-                            <td>@prop.GetValue(info, null)</td>
+                            if (prop.Name.Contains("Name") || prop.Name.Contains("Id"))
+                            {
+                                <td>
+                                    <a href="/GetData/@sectionLine/@property.GetValue(info, null)">@prop.GetValue(info, null)</a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td>@prop.GetValue(info, null)</td>
+                            }
+
                         }
                     }
                 </tr>

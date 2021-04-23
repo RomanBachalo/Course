@@ -7,11 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Course.Pages.Shared
 {
-    public class ListModel : PageModel
+    public class CreateCityModel : PageModel
     {
         public void OnGet()
         {
-            int i = 5;
         }
     }
 }
