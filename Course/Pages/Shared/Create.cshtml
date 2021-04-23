@@ -30,8 +30,8 @@
                 const data = formToJSON(form.elements);
 
                 $.ajax({
-                    type: "POST",
-                    url: "/CreateUpdate/create/@ViewBag.Section",
+                    type: "PUT",
+                    url: "/CreateUpdate/update/@ViewBag.Section",
                     data: JSON.stringify(data, null, '  '),
                     dataType: "json",
                     contentType: "application/json"

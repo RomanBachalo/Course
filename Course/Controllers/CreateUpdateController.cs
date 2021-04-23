@@ -38,6 +38,7 @@ namespace Course.Controllers
         public IActionResult UpdateIndex([FromRoute] string section, [FromRoute] int id)
         {
             ViewBag.Section = section;
+            ViewBag.Id = id;
             object viewModel = _getDataService.GetDataByPropertyAndId(section, id);
 
             switch (section)
@@ -84,7 +85,7 @@ namespace Course.Controllers
             ViewBag.ViewModel = viewModel;
             return new ViewResult
             {
-                ViewName = StringConstants.CreateView,
+                ViewName = StringConstants.UpdateView,
                 ViewData = ViewData
             };
         }
@@ -412,7 +413,7 @@ namespace Course.Controllers
         [HttpPut, Route("update/{element}")]
         public async Task<IActionResult> Update([FromBody] object model, [FromRoute] string element)
         {
-            switch (model.GetType().Name.Replace(StringConstants.ViewModel, ""))
+            switch (element)
             {
                 case PropertyConstants.City:
                     var cityModel = Newtonsoft.Json.JsonConvert.DeserializeObject<CityViewModel>(model.ToString());

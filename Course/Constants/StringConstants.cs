@@ -15,6 +15,7 @@ namespace Course.Constants
         public const string Filter = "Orders Factory SuppliedMaterial MaterialAtFactory" +
             " MaterialInProduction SupplyRealizations MaterialColor OrderedFurnitures" +
             " OrderedMaterials Furniture Productions Supplies FurnitureParameterFurniture" +
-            " City Position Suppliers Cities MaterialType MaterialColors";
+            " City Position Suppliers Cities MaterialType MaterialColors CreateDate UpdateDate" +
+            " Factories Region";
     }
 }
