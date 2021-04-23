@@ -204,7 +204,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Customer:
-                    var customerModel = model as CustomerViewModel;
+                    var customerModel = Newtonsoft.Json.JsonConvert.DeserializeObject<CustomerViewModel>(model.ToString());
 
                     var customer = new Customer
                     {
@@ -219,7 +219,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Employee:
-                    var employeeModel = model as EmployeeViewModel;
+                    var employeeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EmployeeViewModel>(model.ToString());
 
                     var employee = new Employee
                     {
@@ -237,7 +237,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Factory:
-                    var factoryModel = model as FactoryViewModel;
+                    var factoryModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FactoryViewModel>(model.ToString());
 
                     var factory = new Factory
                     {
@@ -253,7 +253,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Furniture:
-                    var furnitureModel = model as FurnitureViewModel;
+                    var furnitureModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FurnitureViewModel>(model.ToString());
 
                     var furniture = new Furniture
                     {
@@ -270,7 +270,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.FurnitureSubtype:
-                    var furnitureSubtypeModel = model as FurnitureSubtypeViewModel;
+                    var furnitureSubtypeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FurnitureSubtypeViewModel>(model.ToString());
 
                     var furnitureSubtype = new FurnitureSubtype
                     {
@@ -285,7 +285,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.FurnitureType:
-                    var furnitureTypeModel = model as FurnitureTypeViewModel;
+                    var furnitureTypeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FurnitureTypeViewModel>(model.ToString());
 
                     var furnitureType = new FurnitureType
                     {
@@ -299,7 +299,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Material:
-                    var materialModel = model as MaterialViewModel;
+                    var materialModel = Newtonsoft.Json.JsonConvert.DeserializeObject<MaterialViewModel>(model.ToString());
 
                     var material = new Material
                     {
@@ -327,7 +327,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.MaterialType:
-                    var materialTypeModel = model as MaterialTypeViewModel;
+                    var materialTypeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<MaterialTypeViewModel>(model.ToString());
 
                     var materilalType = new MaterialType
                     {
@@ -341,19 +341,19 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Order:
-                    var orderModel = model as OrderViewModel;
+                    var orderModel = Newtonsoft.Json.JsonConvert.DeserializeObject<OrderViewModel>(model.ToString());
 
                     await _orderService.CreateOrder(orderModel);
 
                     break;
                 case PropertyConstants.Production:
-                    var productionModel = model as ProductionViewModel;
+                    var productionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductionViewModel>(model.ToString());
 
                     await _productionService.CreateProduction(productionModel);
 
                     break;
                 case PropertyConstants.Position:
-                    var positionModel = model as PositionViewModel;
+                    var positionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<PositionViewModel>(model.ToString());
 
                     var position = new Position
                     {
@@ -367,7 +367,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Region:
-                    var regionModel = model as RegionViewModel;
+                    var regionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<RegionViewModel>(model.ToString());
 
                     var region = new Region
                     {
@@ -381,7 +381,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Supplier:
-                    var supplierModel = model as SupplierViewModel;
+                    var supplierModel = Newtonsoft.Json.JsonConvert.DeserializeObject<SupplierViewModel>(model.ToString());
 
                     var supplier = new Supplier
                     {
@@ -399,7 +399,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Supply:
-                    var supplyModel = model as SupplyViewModel;
+                    var supplyModel = Newtonsoft.Json.JsonConvert.DeserializeObject<SupplyViewModel>(model.ToString());
 
                     await _supplyService.CreateSupply(supplyModel);
 
@@ -409,13 +409,13 @@ namespace Course.Controllers
             return null;
         }
 
-        [HttpPut, Route("update")]
-        public async Task<IActionResult> Update([FromBody] object model)
+        [HttpPut, Route("update/{element}")]
+        public async Task<IActionResult> Update([FromBody] object model, [FromRoute] string element)
         {
             switch (model.GetType().Name.Replace(StringConstants.ViewModel, ""))
             {
                 case PropertyConstants.City:
-                    var cityModel = model as CityViewModel;
+                    var cityModel = Newtonsoft.Json.JsonConvert.DeserializeObject<CityViewModel>(model.ToString());
 
                     var city = _furnitureCompanyContext.Cities.Where(entity => entity.CityId == cityModel.CityId).FirstOrDefault();
 
@@ -428,7 +428,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Color:
-                    var colorModel = model as ColorViewModel;
+                    var colorModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ColorViewModel>(model.ToString());
 
                     var color = _furnitureCompanyContext.Colors.Where(entity => entity.ColorId == colorModel.ColorId).FirstOrDefault();
 
@@ -440,7 +440,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Customer:
-                    var customerModel = model as CustomerViewModel;
+                    var customerModel = Newtonsoft.Json.JsonConvert.DeserializeObject<CustomerViewModel>(model.ToString());
 
                     var customer = _furnitureCompanyContext.Customers.Where(entity => entity.CustomerId == customerModel.CustomerId).FirstOrDefault();
 
@@ -453,7 +453,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Employee:
-                    var employeeModel = model as EmployeeViewModel;
+                    var employeeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<EmployeeViewModel>(model.ToString());
 
                     var employee = _furnitureCompanyContext.Employees.Where(entity => entity.EmployeeId == employeeModel.EmployeeId).FirstOrDefault();
 
@@ -469,7 +469,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Factory:
-                    var factoryModel = model as FactoryViewModel;
+                    var factoryModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FactoryViewModel>(model.ToString());
 
                     var factory = _furnitureCompanyContext.Factories.Where(entity => entity.FactoryId == factoryModel.FactoryId).FirstOrDefault();
 
@@ -483,7 +483,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Furniture:
-                    var furnitureModel = model as FurnitureViewModel;
+                    var furnitureModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FurnitureViewModel>(model.ToString());
 
                     var furniture = _furnitureCompanyContext.Furnitures.Where(entity => entity.FurnitureId == furnitureModel.FurnitureId).FirstOrDefault();
 
@@ -502,7 +502,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.FurnitureSubtype:
-                    var furnitureSubtypeModel = model as FurnitureSubtypeViewModel;
+                    var furnitureSubtypeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FurnitureSubtypeViewModel>(model.ToString());
 
                     var furnitureSubtype = _furnitureCompanyContext.FurnitureSubtypes.Where(entity => entity.FurnitureSubtypeId == furnitureSubtypeModel.FurnitureSubtypeId).FirstOrDefault();
 
@@ -515,7 +515,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.FurnitureType:
-                    var furnitureTypeModel = model as FurnitureTypeViewModel;
+                    var furnitureTypeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<FurnitureTypeViewModel>(model.ToString());
 
                     var furnitureType = _furnitureCompanyContext.FurnitureTypes.Where(entity => entity.FurnitureTypeId == furnitureTypeModel.FurnitureTypeId).FirstOrDefault();
 
@@ -527,7 +527,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Material:
-                    var materialModel = model as MaterialViewModel;
+                    var materialModel = Newtonsoft.Json.JsonConvert.DeserializeObject<MaterialViewModel>(model.ToString());
 
                     var material = _furnitureCompanyContext.Materials.Where(entity => entity.MaterialId == materialModel.MaterialId).FirstOrDefault();
 
@@ -550,7 +550,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.MaterialType:
-                    var materialTypeModel = model as MaterialTypeViewModel;
+                    var materialTypeModel = Newtonsoft.Json.JsonConvert.DeserializeObject<MaterialTypeViewModel>(model.ToString());
 
                     var materilalType = _furnitureCompanyContext.MaterialTypes.Where(entity => entity.MaterialTypeId == materialTypeModel.MaterialTypeId).FirstOrDefault();
 
@@ -562,19 +562,19 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Order:
-                    var orderModel = model as OrderViewModel;
+                    var orderModel = Newtonsoft.Json.JsonConvert.DeserializeObject<OrderViewModel>(model.ToString());
 
                     await _orderService.UpdateOrder(orderModel);
 
                     break;
                 case PropertyConstants.Production:
-                    var productionModel = model as ProductionViewModel;
+                    var productionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ProductionViewModel>(model.ToString());
 
                     await _productionService.UpdateProduction(productionModel);
 
                     break;
                 case PropertyConstants.Position:
-                    var positionModel = model as PositionViewModel;
+                    var positionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<PositionViewModel>(model.ToString());
 
                     var position = _furnitureCompanyContext.Positions.Where(entity => entity.PositionId == positionModel.PrositionId).FirstOrDefault();
 
@@ -586,7 +586,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Region:
-                    var regionModel = model as RegionViewModel;
+                    var regionModel = Newtonsoft.Json.JsonConvert.DeserializeObject<RegionViewModel>(model.ToString());
 
                     var region = _furnitureCompanyContext.Regions.Where(entity => entity.RegionId == regionModel.RegionId).FirstOrDefault();
 
@@ -598,7 +598,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Supplier:
-                    var supplierModel = model as SupplierViewModel;
+                    var supplierModel = Newtonsoft.Json.JsonConvert.DeserializeObject<SupplierViewModel>(model.ToString());
 
                     var supplier = _furnitureCompanyContext.Suppliers.Where(entity => entity.SupplierId == supplierModel.SupplierId).FirstOrDefault();
 
@@ -614,7 +614,7 @@ namespace Course.Controllers
 
                     break;
                 case PropertyConstants.Supply:
-                    var supplyModel = model as SupplyViewModel;
+                    var supplyModel = Newtonsoft.Json.JsonConvert.DeserializeObject<SupplyViewModel>(model.ToString());
 
                     await _supplyService.UpdateSupply(supplyModel);
 
