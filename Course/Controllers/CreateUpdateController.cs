@@ -61,11 +61,14 @@ namespace Course.Controllers
                     break;
                 case PropertyConstants.Material:
                     ViewBag.MaterialType = _furnitureCompanyContext.MaterialTypes;
+                    ViewBag.Color = _furnitureCompanyContext.Colors;
                     break;
                 case PropertyConstants.Order:
                     viewModel = new OrderViewModel();
                     ViewBag.Customer = _furnitureCompanyContext.Customers;
                     ViewBag.Employee = _furnitureCompanyContext.Employees;
+                    ViewBag.Furniture = _furnitureCompanyContext.Furnitures;
+                    ViewBag.Material = _furnitureCompanyContext.Materials;
                     break;
                 case PropertyConstants.Production:
                     viewModel = new ProductionViewModel();
@@ -78,7 +81,9 @@ namespace Course.Controllers
                     break;
                 case PropertyConstants.Supply:
                     viewModel = new SupplierViewModel();
-                    ViewBag.City = _furnitureCompanyContext.Cities;
+                    ViewBag.Supplier = _furnitureCompanyContext.Suppliers;
+                    ViewBag.Employee = _furnitureCompanyContext.Employees;
+                    ViewBag.Material = _furnitureCompanyContext.Materials;
                     break;
             }
 
@@ -115,10 +120,12 @@ namespace Course.Controllers
                 case PropertyConstants.Factory:
                     viewModel = new FactoryViewModel();
                     ViewBag.City = _furnitureCompanyContext.Cities;
+                    ViewBag.Region = _furnitureCompanyContext.Regions;
                     break;
                 case PropertyConstants.Furniture:
                     viewModel = new FurnitureViewModel();
                     ViewBag.FurnitureSubtype = _furnitureCompanyContext.FurnitureSubtypes;
+                    ViewBag.FurnitureParameter = _furnitureCompanyContext.FurnitureParameters;
                     break;
                 case PropertyConstants.FurnitureSubtype:
                     viewModel = new FurnitureSubtypeViewModel();
@@ -130,6 +137,7 @@ namespace Course.Controllers
                 case PropertyConstants.Material:
                     viewModel = new MaterialViewModel();
                     ViewBag.MaterialType = _furnitureCompanyContext.MaterialTypes;
+                    ViewBag.Color = _furnitureCompanyContext.Colors;
                     break;
                 case PropertyConstants.MaterialType:
                     viewModel = new MaterialTypeViewModel();
@@ -138,6 +146,8 @@ namespace Course.Controllers
                     viewModel = new OrderViewModel();
                     ViewBag.Customer = _furnitureCompanyContext.Customers;
                     ViewBag.Employee = _furnitureCompanyContext.Employees;
+                    ViewBag.Furniture = _furnitureCompanyContext.Furnitures;
+                    ViewBag.Material = _furnitureCompanyContext.Materials;
                     break;
                 case PropertyConstants.Position:
                     viewModel = new PositionViewModel();
@@ -156,8 +166,10 @@ namespace Course.Controllers
                     ViewBag.City = _furnitureCompanyContext.Cities;
                     break;
                 case PropertyConstants.Supply:
-                    viewModel = new SupplierViewModel();
-                    ViewBag.City = _furnitureCompanyContext.Cities;
+                    viewModel = new SupplyViewModel();
+                    ViewBag.Supplier = _furnitureCompanyContext.Suppliers;
+                    ViewBag.Employee = _furnitureCompanyContext.Employees;
+                    ViewBag.Material = _furnitureCompanyContext.Materials;
                     break;
             }
 
@@ -407,7 +419,8 @@ namespace Course.Controllers
                     break;
             }
 
-            return View(StringConstants.HomeView);
+            return Redirect("/");
+            //return View(StringConstants.HomeView);
         }
 
         [HttpPut, Route("update/{element}")]
@@ -622,7 +635,7 @@ namespace Course.Controllers
                     break;
             }
 
-            return View(StringConstants.HomeView);
+            return Redirect("/");
         }
     }
 }

@@ -67,12 +67,16 @@
                     <select form="createForm" id="@prop.Name" name="@prop.Name">
                         @{
                             var viewData = (ViewBag.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Instance))[0].GetValue(ViewBag, null)[prop.Name.Replace("Id", "")];
-                            @foreach (var item in viewData)
+                            if (viewData != null)
                             {
-                                <option value="@((item.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains("Id")).FirstOrDefault().GetValue(item, null))">
-                                    @((item.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains("Name")).FirstOrDefault().GetValue(item, null))
-                                </option>
+                                @foreach (var item in viewData)
+                                {
+                                    <option value="@((item.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains("Id")).FirstOrDefault().GetValue(item, null))">
+                                        @((item.GetType().GetProperties() as PropertyInfo[]).Where(pr => pr.Name.Contains("Name")).FirstOrDefault().GetValue(item, null))
+                                    </option>
+                                }
                             }
+
                         }
                     </select>
                     <br />

@@ -12,6 +12,7 @@ namespace Course.ViewModels.CreateViewModels
         public string FurnitureName { get; set; }
         public decimal BasePrice { get; set; }
         public string Description { get; set; }
-        public Dictionary<int,int> Parameters { get; set; }
+        public int FurnitureParameterId { get; set; }
+        public string FurnitureParameterValue { get; set; }
     }
 }

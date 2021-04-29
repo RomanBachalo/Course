@@ -30,6 +30,7 @@ namespace Course.Services
             };
 
             await _furnitureCompanyContext.Productions.AddAsync(production);
+            await _furnitureCompanyContext.SaveChangesAsync();
 
             var productionEmployee = new ProductionEmployee
             {
@@ -39,7 +40,8 @@ namespace Course.Services
                 UpdateDate = DateTime.Now
             };
 
-            await _furnitureCompanyContext.ProductionEmployees.AddAsync(productionEmployee);
+            //await _furnitureCompanyContext.ProductionEmployees.AddAsync(productionEmployee);
+            //await _furnitureCompanyContext.SaveChangesAsync();
 
             var materialInProduction = new MaterialsInProduction
             {

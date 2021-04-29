@@ -17,6 +17,6 @@ namespace Course.Constants
             " MaterialInProduction SupplyRealizations MaterialColor OrderedFurnitures" +
             " OrderedMaterials Furniture Productions Supplies FurnitureParameterFurniture" +
             " City Position Suppliers Cities MaterialType MaterialColors CreateDate UpdateDate" +
-            " Factories Region";
+            " Factories Region Employees";
     }
 }

@@ -31,9 +31,7 @@ namespace Course.Services
             };
 
             await _furnitureCompanyContext.Supplies.AddAsync(supply);
-
-            var suppliedMaterials = new List<SuppliedMaterial>();
-
+            await _furnitureCompanyContext.SaveChangesAsync();
 
             var suppliedMaterial = new SuppliedMaterial
             {
@@ -50,17 +48,19 @@ namespace Course.Services
                                               select material.Price).Sum() * model.MaterialAmount;
 
 
-            supply.TotalSum = suppliedMaterials.Sum(supMaterial => supMaterial.SupplierPrice);
+            supply.TotalSum = suppliedMaterial.SupplierPrice;
 
             _furnitureCompanyContext.Supplies.Update(supply);
-            await _furnitureCompanyContext.SuppliedMaterials.AddRangeAsync(suppliedMaterials);
+            await _furnitureCompanyContext.SaveChangesAsync();
+            await _furnitureCompanyContext.SuppliedMaterials.AddAsync(suppliedMaterial);
+            await _furnitureCompanyContext.SaveChangesAsync();
 
             var supplyRealization = new SupplyRealization
             {
                 SuppliedMaterialsId = suppliedMaterial.SuppliedMaterialsId,
-                MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.Last().MaterialsAtFactoryId,
+                MaterialsAtFactoryId = _furnitureCompanyContext.MaterialsAtFactories.OrderBy(maf => maf.MaterialsAtFactoryId).LastOrDefault().MaterialsAtFactoryId,
                 EmployeeId = supply.EmployeeId,
-                Count = (short)(suppliedMaterial.Amount + _furnitureCompanyContext.MaterialsAtFactories.Last().Count),
+                Count = (short)(suppliedMaterial.Amount + _furnitureCompanyContext.MaterialsAtFactories.OrderBy(maf => maf.MaterialsAtFactoryId).LastOrDefault().Count),
                 CreateDate = DateTime.Now,
                 UpdateDate = DateTime.Now
             };
@@ -144,6 +144,7 @@ namespace Course.Services
             }
 
             _furnitureCompanyContext.SuppliedMaterials.RemoveRange(oldSuppliedMaterials);
+            await _furnitureCompanyContext.SaveChangesAsync();
 
             var suppliedMaterial = new SuppliedMaterial
             {
@@ -165,6 +166,7 @@ namespace Course.Services
 
             _furnitureCompanyContext.Supplies.Update(supply);
             await _furnitureCompanyContext.SuppliedMaterials.AddAsync(suppliedMaterial);
+            await _furnitureCompanyContext.SaveChangesAsync();
 
             var supplyRealization = new SupplyRealization
             {

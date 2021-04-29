@@ -30,6 +30,7 @@ namespace Course.Services
             };
 
             await _furnitureCompanyContext.Orders.AddAsync(order);
+            await _furnitureCompanyContext.SaveChangesAsync();
 
             var orderedFurniture = new OrderedFurniture
             {
@@ -44,6 +45,7 @@ namespace Course.Services
             };
 
             await _furnitureCompanyContext.OrderedFurnitures.AddAsync(orderedFurniture);
+            await _furnitureCompanyContext.SaveChangesAsync();
 
             var orderedMaterial = new OrderedMaterial
             {
@@ -55,22 +57,32 @@ namespace Course.Services
             };
 
             await _furnitureCompanyContext.OrderedMaterials.AddAsync(orderedMaterial);
+            await _furnitureCompanyContext.SaveChangesAsync();
 
-            decimal orderedFurnituresSum = _furnitureCompanyContext.OrderedFurnitures
-                .Where(orFur => orFur.OrderId == order.OrderId)
-                .Sum(orFur => orFur.Amount * _furnitureCompanyContext.Furnitures
-                    .Where(fur => fur.FurnitureId == orFur.FurnitureId)
-                    .FirstOrDefault().BasePrice + orFur.SizeSurchase);
+            //decimal orderedFurnituresSum = _furnitureCompanyContext.OrderedFurnitures
+            //    .Where(orFur => orFur.OrderId == order.OrderId)
+            //    .Sum(orFur => orFur.Amount * _furnitureCompanyContext.Furnitures
+            //        .Where(fur => fur.FurnitureId == orFur.FurnitureId)
+            //        .FirstOrDefault().BasePrice + orFur.SizeSurchase);
 
-            decimal orderedMaterialsSum = (from orderedFurnitures in _furnitureCompanyContext.OrderedFurnitures
-                                           join orderedMaterials in _furnitureCompanyContext.OrderedMaterials on orderedFurnitures.OrderedFurnitureId equals orderedMaterials.OrderedFurnitureId
-                                           join materialColors in _furnitureCompanyContext.MaterialColors on orderedMaterials.MaterialColorId equals materialColors.MaterialColorId
-                                           join material in _furnitureCompanyContext.Materials on materialColors.MaterialId equals material.MaterialId
-                                           where orderedFurnitures.OrderId == order.OrderId
-                                           group material by orderedMaterial.MaterialColorId into mGroup
-                                           select mGroup.Sum(mater => mater.Price)).Sum();
+            //decimal orderedMaterialsSum = (from orderedFurnitures in _furnitureCompanyContext.OrderedFurnitures
+            //                               join orderedMaterials in _furnitureCompanyContext.OrderedMaterials on orderedFurnitures.OrderedFurnitureId equals orderedMaterials.OrderedFurnitureId
+            //                               join materialColors in _furnitureCompanyContext.MaterialColors on orderedMaterials.MaterialColorId equals materialColors.MaterialColorId
+            //                               join material in _furnitureCompanyContext.Materials on materialColors.MaterialId equals material.MaterialId
+            //                               where orderedFurnitures.OrderId == order.OrderId
+            //                               group material by orderedMaterial.MaterialColorId into mGroup
+            //                               select mGroup.Sum(mater => mater.Price)).Sum();
+            
 
-            order.TotalSum = orderedFurnituresSum + orderedMaterialsSum;
+            decimal orderedFurnituresSum = _furnitureCompanyContext.Furnitures
+                .Where(fur => fur.FurnitureId == orderedFurniture.FurnitureId)
+                .Sum(fur => fur.BasePrice) * orderedFurniture.Amount + orderedFurniture.SizeSurchase;
+
+            //decimal orderedMaterialsSum = orderedMaterial.Amount * _furnitureCompanyContext.Materials
+            //    .Where(mat => mat.MaterialId == orderedMaterial.MaterialColor.MaterialId)
+            //    .Sum(mat => mat.Price);
+
+            order.TotalSum = orderedFurnituresSum + 0;
 
             _furnitureCompanyContext.Orders.Update(order);
             await _furnitureCompanyContext.SaveChangesAsync();
